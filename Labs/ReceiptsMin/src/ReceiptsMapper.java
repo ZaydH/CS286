@@ -16,11 +16,15 @@ public class ReceiptsMapper extends Mapper<LongWritable, Text, Text, Text> {
 		StringTokenizer strToken = new StringTokenizer(value.toString(), "\\s+");
 		
 		// Get the year first.
+		if(!strToken.hasMoreTokens()) return;
 		String year = strToken.nextToken();
 		// Skip the next two tokens.
+		if(!strToken.hasMoreTokens()) return;
 		strToken.nextToken();
+		if(!strToken.hasMoreTokens()) return;
 		strToken.nextToken();
 		// Get the delta
+		if(!strToken.hasMoreTokens()) return;
 		String delta = strToken.nextToken();
 		
 		context.write(new Text("dummy"), new Text( year + "_" + delta));

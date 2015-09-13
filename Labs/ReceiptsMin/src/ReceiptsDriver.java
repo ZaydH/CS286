@@ -1,8 +1,14 @@
-import org.apache.hadoop.conf.*;
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapreduce.*;
-import org.apache.hadoop.mapreduce.lib.input.*;
-import org.apache.hadoop.util.*;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
 public class ReceiptsDriver extends Configured implements Tool {
 
@@ -33,6 +39,10 @@ public class ReceiptsDriver extends Configured implements Tool {
 		// Set the reducer's output class.
 		job.setOutputKeyClass(Text.class);
 		job.setOutputKeyClass(FloatWritable.class);
+		
+		// Configure the data input and output file locations
+		FileInputFormat.addInputPath(job, new Path("file:///"+args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
 		// Wait for the job to finish.
 		return job.waitForCompletion(true)? 0 : 1;

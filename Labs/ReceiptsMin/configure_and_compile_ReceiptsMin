@@ -1,0 +1,17 @@
+export HADOOP_HOME=/opt/mapr/hadoop/hadoop-0.20.2
+export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64
+export PATH=$HADOOP_HOME/bin:$PATH
+export CLASSPATH=$HADOOP_HOME/*:$HADOOP_HOME/lib/*
+export HADOOP_CLASSPATH=$CLASSPATH
+
+mkdir -p bin
+rm -rf Receipts.jar
+
+javac -d bin ./src/ReceiptsMapper.java
+javac -d bin ./src/ReceiptsReducer.java
+
+jar -cvf Receipts.jar -C bin/ .
+
+javac -classpath $CLASSPATH:Receipts.jar -d bin ./src/ReceiptsDriver.java
+
+jar -uvf Receipts.jar -C bin/ .

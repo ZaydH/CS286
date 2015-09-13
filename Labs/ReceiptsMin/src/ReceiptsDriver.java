@@ -41,7 +41,7 @@ public class ReceiptsDriver extends Configured implements Tool {
 		job.setOutputKeyClass(FloatWritable.class);
 		
 		// Configure the data input and output file locations
-		FileInputFormat.addInputPath(job, new Path("file:///"+args[0]));
+		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
 		// Wait for the job to finish.

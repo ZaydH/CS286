@@ -24,7 +24,7 @@ public class IrisDriver extends Configured implements Tool {
          System.exit(1);
       }
       // TODO change name below
-      Job job = new Job(getConf(), "james_casaletto");
+      Job job = new Job(getConf(), "Zayd_Hammoudeh");
 
       job.setJarByClass(IrisDriver.class);
       job.setMapperClass(IrisMapper.class);

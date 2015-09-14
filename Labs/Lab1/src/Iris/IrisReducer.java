@@ -9,7 +9,7 @@ import java.io.IOException;
 public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
 	String[] tempString;
 	float tempSepalLength, tempSepalWidth, tempPetalLength, tempPetalWidth;
-	float totalSepalLength, totalSepalWidth, totalPetalLength,  totalPetalWidth;
+	float totalSepalLength, totalSepalWidth, totalPetalLength, totalPetalWidth;
 	float minSepalLength, maxSepalLength, meanSepalLength, minSepalWidth, maxSepalWidth, meanSepalWidth, minPetalLength, maxPetalLength, meanPetalLength, minPetalWidth, maxPetalWidth, meanPetalWidth;
 
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
@@ -17,7 +17,7 @@ public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
 		// Initialize the variable values
 		minSepalLength = minPetalLength = minSepalWidth = minPetalWidth = Float.MAX_VALUE;
 		maxSepalLength = maxPetalLength = maxSepalWidth = maxPetalWidth = Float.MIN_VALUE;
-		meanSepalLength = meanPetalLength = meanSepalWidth = meanPetalWidth = 0;
+		totalSepalLength = totalSepalWidth = totalPetalLength = totalPetalWidth = 0;
 		int count = 0;
 
 		// Iterate through all mapped value lines.

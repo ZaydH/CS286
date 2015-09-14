@@ -4,33 +4,49 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.FloatWritable;
 import java.io.IOException;
+import java.util.StringTokenizer;
 
 
+@SuppressWarnings("unused")
 public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
 	String[] tempString;
 	float tempSepalLength, tempSepalWidth, tempPetalLength, tempPetalWidth;
-	float totalSepalLength, totalSepalWidth, totalPetalLength,  totalPetalWidth;
+	float totalSepalLength, totalSepalWidth, totalPetalLength, totalPetalWidth;
 	float minSepalLength, maxSepalLength, meanSepalLength, minSepalWidth, maxSepalWidth, meanSepalWidth, minPetalLength, maxPetalLength, meanPetalLength, minPetalWidth, maxPetalWidth, meanPetalWidth;
 
+	
+	private static final boolean USE_STRING_TOKENIZER = false;
+	
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
 		// Initialize the variable values
 		minSepalLength = minPetalLength = minSepalWidth = minPetalWidth = Float.MAX_VALUE;
 		maxSepalLength = maxPetalLength = maxSepalWidth = maxPetalWidth = Float.MIN_VALUE;
-		meanSepalLength = meanPetalLength = meanSepalWidth = meanPetalWidth = 0;
+		totalSepalLength = totalSepalWidth = totalPetalLength = totalPetalWidth = 0;
 		int count = 0;
 
 		// Iterate through all mapped value lines.
 		for(Text value: values) {
-			// TODO use String split() method to split value and assign to tempString
-			// In mapper, fields are underscore separated.
-			String[] tempString = value.toString().split("_");
-
-			// TODO convert tempString elements to temp sepal/petal length/width vars
-			tempSepalLength = Float.parseFloat(tempString[0]);
-			tempSepalWidth = Float.parseFloat(tempString[1]);
-			tempPetalLength = Float.parseFloat(tempString[2]);
-			tempPetalWidth = Float.parseFloat(tempString[3]);    	  
+			
+			if(!USE_STRING_TOKENIZER){
+				// TODO use String split() method to split value and assign to tempString
+				// In mapper, fields are underscore separated.
+				String[] tempString = value.toString().split("_");
+	
+				// TODO convert tempString elements to temp sepal/petal length/width vars
+				tempSepalLength = Float.parseFloat(tempString[0]);
+				tempSepalWidth = Float.parseFloat(tempString[1]);
+				tempPetalLength = Float.parseFloat(tempString[2]);
+				tempPetalWidth = Float.parseFloat(tempString[3]);  
+			}
+			else{
+				StringTokenizer token = new StringTokenizer(value.toString(), "_");
+				// TODO convert tempString elements to temp sepal/petal length/width vars
+				tempSepalLength = Float.parseFloat(token.nextToken());
+				tempSepalWidth = Float.parseFloat(token.nextToken());
+				tempPetalLength = Float.parseFloat(token.nextToken());
+				tempPetalWidth = Float.parseFloat(token.nextToken());
+			}
     	  
 			// TODO determine if you have min/max sepal/petal length/widths and assign to min/max sepal/petal length/widths accordingly
 			// Update the maximum parameters.

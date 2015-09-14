@@ -5,8 +5,10 @@ export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64
 export CLASSPATH=$HADOOP_HOME/*:$HADOOP_HOME/lib/* 
 export HADOOP_CLASSPATH=$CLASSPATH
 
-javac -d classes IrisMapper.java
-javac -d classes IrisReducer.java
-jar -cvf Iris.jar -C classes/ .
-javac -classpath $CLASSPATH:Iris.jar -d classes IrisDriver.java
-jar -uvf Iris.jar -C classes/ .
+mkdir -p bin
+rm -rf Iris.jar
+javac -d bin ./src/Iris/IrisMapper.java
+javac -d bin ./src/Iris/IrisReducer.java
+jar -cvf Iris.jar -C bin/ .
+javac -classpath $CLASSPATH:Iris.jar -d bin ./src/Iris/IrisDriver.java
+jar -uvf Iris.jar -C bin/ .

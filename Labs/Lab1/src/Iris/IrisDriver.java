@@ -1,8 +1,6 @@
 package Iris; 
 
-import java.util.*;
-
-
+//import java.util.*;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;

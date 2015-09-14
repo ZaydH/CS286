@@ -26,11 +26,11 @@ public class IrisDriver extends Configured implements Tool {
       // TODO change name below
       Job job = new Job(getConf(), "Zayd_Hammoudeh");
 
-      job.setJarByClass(IrisDriver.class);
-      job.setMapperClass(IrisMapper.class);
+      job.setJarByClass(getClass());
+      job.setMapperClass(Iris.IrisMapper.class);
 
       // TODO comment out the Reducer class definition
-      job.setReducerClass(IrisReducer.class);
+      job.setReducerClass(Iris.IrisReducer.class);
 
       job.setInputFormatClass(TextInputFormat.class);
       job.setOutputKeyClass(Text.class);
@@ -40,7 +40,7 @@ public class IrisDriver extends Configured implements Tool {
       FileInputFormat.addInputPath(job, new Path(args[0]));
       FileOutputFormat.setOutputPath(job, new Path(args[1])); 
 
-      // launch job syncronously
+      // launch job synchronously
       return  job.waitForCompletion(true) ? 0 : 1;
 
 

@@ -23,7 +23,8 @@ public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
 		// Iterate through all mapped value lines.
 		for(Text value: values) {
 			// TODO use String split() method to split value and assign to tempString
-			String[] tempString = value.toString().split("\\s+");
+			// In mapper, fields are underscore separated.
+			String[] tempString = value.toString().split("_");
 
 			// TODO convert tempString elements to temp sepal/petal length/width vars
 			tempSepalLength = Float.parseFloat(tempString[0]);

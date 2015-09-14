@@ -7,63 +7,68 @@ import java.io.IOException;
 
 
 public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
-   String[] tempString;
-   float tempSepalLength, tempSepalWidth, tempPetalLength, tempPetalWidth;
-   float totalSepalLength, totalSepalWidth, totalPetalLength,  totalPetalWidth;
-   float minSepalLength, maxSepalLength, meanSepalLength, minSepalWidth, maxSepalWidth, meanSepalWidth, minPetalLength, maxPetalLength, meanPetalLength, minPetalWidth, maxPetalWidth, meanPetalWidth;
+	String[] tempString;
+	float tempSepalLength, tempSepalWidth, tempPetalLength, tempPetalWidth;
+	float totalSepalLength, totalSepalWidth, totalPetalLength,  totalPetalWidth;
+	float minSepalLength, maxSepalLength, meanSepalLength, minSepalWidth, maxSepalWidth, meanSepalWidth, minPetalLength, maxPetalLength, meanPetalLength, minPetalWidth, maxPetalWidth, meanPetalWidth;
 
-   public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
-	   minSepalLength = minPetalLength = minSepalWidth = minPetalWidth = Float.MAX_VALUE;
-       maxSepalLength = maxPetalLength = maxSepalWidth = maxPetalWidth = Float.MIN_VALUE;
-//       // Declare variables used for mean calculations
-//       double totalPetalLength = 0;
-//       double totalPetalWidth = 0;
-//       double totalSepalLength = 0;
-//       double totalSepalWidth = 0;
-       int count = 0;
+		// Initialize the variable values
+		minSepalLength = minPetalLength = minSepalWidth = minPetalWidth = Float.MAX_VALUE;
+		maxSepalLength = maxPetalLength = maxSepalWidth = maxPetalWidth = Float.MIN_VALUE;
+		meanSepalLength = meanPetalLength = meanSepalWidth = meanPetalWidth = 0;
+		int count = 0;
 
-       // Declare Temp Variables for use in the loop.
-       
-       for(Text value: values) {
-    	   // TODO use String split() method to split value and assign to tempString
-    	   String[] tempString = value.toString().split("\\s+");
+		// Iterate through all mapped value lines.
+		for(Text value: values) {
+			// TODO use String split() method to split value and assign to tempString
+			String[] tempString = value.toString().split("\\s+");
 
-    	   // TODO convert tempString elements to temp sepal/petal length/width vars
-    	  tempSepalLength = Float.parseFloat(tempString[0]);
-    	  tempSepalWidth = Float.parseFloat(tempString[1]);
-    	  tempPetalLength = Float.parseFloat(tempString[2]);
-    	  tempPetalWidth = Float.parseFloat(tempString[3]);    	  
+			// TODO convert tempString elements to temp sepal/petal length/width vars
+			tempSepalLength = Float.parseFloat(tempString[0]);
+			tempSepalWidth = Float.parseFloat(tempString[1]);
+			tempPetalLength = Float.parseFloat(tempString[2]);
+			tempPetalWidth = Float.parseFloat(tempString[3]);    	  
     	  
-    	   // TODO determine if you have min/max sepal/petal length/widths and assign to min/max sepal/petal length/widths accordingly
-    	   
+			// TODO determine if you have min/max sepal/petal length/widths and assign to min/max sepal/petal length/widths accordingly
+			// Update the maximum parameters.
+			if(tempSepalLength > maxSepalLength) maxSepalLength = tempSepalLength;
+			if(tempSepalWidth > maxSepalWidth) maxSepalWidth = tempSepalWidth;
+			if(tempPetalLength > maxPetalLength) maxPetalLength = tempPetalLength;
+			if(tempPetalWidth > maxPetalWidth) maxPetalWidth = tempPetalWidth;
+			// Update the Minimum parameters if applicable
+			if(tempSepalLength < minSepalLength) minSepalLength = tempSepalLength;
+			if(tempSepalWidth < minSepalWidth) minSepalWidth = tempSepalWidth;
+			if(tempPetalLength < minPetalLength) minPetalLength = tempPetalLength;
+    	  	if(tempPetalWidth < minPetalWidth) minPetalWidth = tempPetalWidth;
 
-    	   // TODO calculate running totals for sepal/petal length/widths for use in calculation of means
-    	   totalPetalLength += tempPetalLength;
-    	   totalPetalWidth += tempPetalWidth;
-    	   totalSepalLength += tempSepalLength;
-    	   totalSepalWidth += tempSepalWidth;
+    	  	// TODO calculate running totals for sepal/petal length/widths for use in calculation of means
+    	  	totalPetalLength += tempPetalLength;
+    	  	totalPetalWidth += tempPetalWidth;
+    	  	totalSepalLength += tempSepalLength;
+    	  	totalSepalWidth += tempSepalWidth;
 
-    	   // TODO increment counter for use in calculation of means
-    	   count++;
+    	  	// TODO increment counter for use in calculation of means
+    	  	count++;
 
-       } 
+		} 
      
-       // TODO calculate mean sepal/petal length/width 
-       meanPetalLength = (totalPetalLength)/count;
-       meanPetalWidth = (totalPetalWidth)/count;
-       meanSepalLength = (totalSepalLength)/count;
-       meanSepalWidth = (totalSepalWidth)/count;
+		// TODO calculate mean sepal/petal length/width 
+		meanPetalLength = (totalPetalLength)/count;
+		meanPetalWidth = (totalPetalWidth)/count;
+		meanSepalLength = (totalSepalLength)/count;
+		meanSepalWidth = (totalSepalWidth)/count;
        
-       // TODO generate string output per the requirement
-       // minSepalLength\tmaxSepalLength\tmeanSepalLength\t ...
-       String output =   minSepalLength + "\t" + maxSepalLength + "\t" + meanSepalLength + "\t"
-    		   		   + minSepalWidth  + "\t" + maxSepalWidth  + "\t" + meanSepalWidth + "\t" 
-    		   		   + minPetalLength + "\t" + maxPetalLength + "\t" + meanPetalLength + "\t" 
-    		   		   + minPetalWidth  + "\t" + maxPetalWidth  + "\t" + meanPetalWidth;
+		// TODO generate string output per the requirement
+		// minSepalLength\tmaxSepalLength\tmeanSepalLength\t ...
+		String output =   minSepalLength + "\t" + maxSepalLength + "\t" + meanSepalLength + "\t"
+      		   		    + minSepalWidth  + "\t" + maxSepalWidth  + "\t" + meanSepalWidth + "\t" 
+      		   		    + minPetalLength + "\t" + maxPetalLength + "\t" + meanPetalLength + "\t" 
+    		   		    + minPetalWidth  + "\t" + maxPetalWidth  + "\t" + meanPetalWidth;
 
-       // TODO emit output to context
-       context.write(key, new Text(output));
+		// TODO emit output to context
+		context.write(key, new Text(output));
 
-   }
+	}
 }

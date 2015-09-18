@@ -7,6 +7,6 @@ export HADOOP_CLASSPATH=$CLASSPATH
 
 javac -d classes IrisMapper.java
 javac -d classes IrisReducer.java
-jar -cvf Iris.jar -C classes .
+jar -cvf Iris.jar -C classes/ .
 javac -classpath $CLASSPATH:Iris.jar -d classes IrisDriver.java
 jar -uvf Iris.jar -C classes/ .

@@ -6,4 +6,4 @@ export CLASSPATH=$HADOOP_HOME/lib/*:$HADOOP_HOME/*
 export HADOOP_CLASSPATH=$CLASSPATH
 
 rm -rf /user/$USER/IRIS_LAB/OUT
-hadoop jar Iris.jar Iris.IrisDriver ./DATA/iris-data.txt /user/$USER/IRIS_LAB/OUT 
+hadoop jar Iris.jar Iris.IrisDriver /user/$USER/IRIS_LAB/DATA/iris-data.txt /user/$USER/IRIS_LAB/OUT 

@@ -79,10 +79,10 @@ public class IrisReducer  extends Reducer <Text,Text,Text,Text> {
        
 		// TODO generate string output per the requirement
 		// minSepalLength\tmaxSepalLength\tmeanSepalLength\t ...
-		String output =   minSepalLength + "\t" + maxSepalLength + "\t" + meanSepalLength + "\t"
-      		   		    + minSepalWidth  + "\t" + maxSepalWidth  + "\t" + meanSepalWidth + "\t" 
-      		   		    + minPetalLength + "\t" + maxPetalLength + "\t" + meanPetalLength + "\t" 
-    		   		    + minPetalWidth  + "\t" + maxPetalWidth  + "\t" + meanPetalWidth;
+		String output =   minSepalWidth  + "\t" + maxSepalWidth  + "\t" + meanSepalWidth  + "\t"
+      		   		    + minSepalLength + "\t" + maxSepalLength + "\t" + meanSepalLength + "\t" 
+      		   		    + minPetalWidth  + "\t" + maxPetalWidth  + "\t" + meanPetalWidth  + "\t" 
+    		   		    + minPetalLength + "\t" + maxPetalLength + "\t" + meanPetalLength;
 
 		// TODO emit output to context
 		context.write(key, new Text(output));

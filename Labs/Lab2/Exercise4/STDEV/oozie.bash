@@ -12,7 +12,7 @@ hadoop fs -rmr /user/user01/lab2/exercise4/zayd_hammoudeh_lab2_exercise4
 hadoop fs -put zayd_hammoudeh_lab2_exercise4 /user/user01/lab2/exercise4/zayd_hammoudeh_lab2_exercise4
 
 # Run the oozie job
-/opt/mapr/oozie/oozie-4.1.0/bin/oozie job -oozie="http://marp1node:11000/oozie" -config /user/user01/lab2/exercise4/zayd_hammoudeh_lab2_exercise4/job.properties -run
+/opt/mapr/oozie/oozie-4.1.0/bin/oozie job -oozie="http://localhost:11000/oozie" -config /user/user01/lab2/exercise4/zayd_hammoudeh_lab2_exercise4/job.properties -run
 
 
 # Check job status. Replace <JobName> with the actual job name

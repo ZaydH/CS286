@@ -1,4 +1,4 @@
-package Iris; 
+package Stdev; 
 
 //import java.util.*;
 import org.apache.hadoop.conf.Configured;
@@ -23,13 +23,13 @@ public class IrisDriver extends Configured implements Tool {
 		}
 		// TODO change name below
 		@SuppressWarnings("deprecation")
-		Job job = new Job(getConf(), "Zayd_Hammoudeh");
+		Job job = new Job(getConf(), "Zayd_Hammoudeh_Exercise4");
 
 		job.setJarByClass(getClass());
-		job.setMapperClass(Iris.IrisMapper.class);
+		job.setMapperClass(Stdev.StdevMapper.class);
 
 		// TODO comment out the Reducer class definition
-		job.setReducerClass(Iris.IrisReducer.class);
+		job.setReducerClass(Stdev.StdevReducer.class);
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputKeyClass(Text.class);

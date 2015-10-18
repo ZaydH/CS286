@@ -14,4 +14,4 @@ $KAFKA_DIR/bin/kafka-topics.sh --zookeeper localhost:5181 --list
 $KAFKA_DIR/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic logtest 
 
 # Create a Kafka Consumer
-$KAFKA_DIR/bin/kafka-console-consumer.sh --zookeeper localhost:5181 --topic test --from-beginning
+$KAFKA_DIR/bin/kafka-console-consumer.sh --zookeeper localhost:5181 --from-beginning --topic logtest

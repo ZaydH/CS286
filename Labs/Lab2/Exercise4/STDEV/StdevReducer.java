@@ -1,4 +1,4 @@
-package Iris;
+package Stdev;
 
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.io.Text;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 
 @SuppressWarnings("unused")
-public class IrisReducer  extends Reducer <Text,Text,Text,FloatWritable> {
+public class StdevReducer  extends Reducer <Text,Text,Text,FloatWritable> {
 	
 	private int itemCount;
 	private float mean;
@@ -25,21 +25,22 @@ public class IrisReducer  extends Reducer <Text,Text,Text,FloatWritable> {
 			// Sum up all the elements
 			for(Text value: values){
 				itemCount++;
-				mean += Float.parseFloat(value);
+				mean += Float.parseFloat(value.toString());
 			}
 			mean /= itemCount;
 		}
 		else{
 
 			float stdDev = 0;
+
 			// Add the sum of squared mean differences
 			for(Text value: values){
-				stdev += Math.pow(Float.parseFloat(value) - mean, 2);
+				stdDev += Math.pow(Float.parseFloat(value.toString()) - mean, 2);
 			}
-			stdev /= Math.pow( stdev / (itemCount - 1), 0.5);
+			stdDev = (float)Math.pow( stdDev / (itemCount - 1), 0.5);
 			
 			// TODO emit output to context
-			context.write(key, new FloatWritable(output));
+			context.write(key, new FloatWritable(stdDev));
 		} 
 
 

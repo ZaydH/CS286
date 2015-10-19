@@ -1,12 +1,12 @@
-<workflow-app xmlns="uri:oozie:workflow:0.3" name="aggregator-wf">
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="aggregator-wf">
 	<start to="stdev-calc"/>
 
 	<action name="stdev-calc">
 		<map-reduce>
-			<job-tracker>${resourceManger}</job-tracker>
-			<name-node>${nameNode}</name-node>
+	            <job-tracker>${jobTracker}</job-tracker>
+        	    <name-node>"${nameNode}"</name-node>
 			<prepare>
-				<delete path="${outputDir}"/>
+				<delete path="/user/user01/lab2/exercise4/OUT"/>
 			</prepare>
 			<configuration>
 				<property>
@@ -19,11 +19,11 @@
 				</property>
 				<property>
 					<name>mapred.input.dir</name>
-					<value>"/user/user01/lab2/exercise4/DATA"</value>
+					<value>/user/user01/lab2/exercise4/DATA</value>
 				</property>
 				<property>
 					<name>mapred.output.dir</name>
-					<value>"/user/user01/lab2/exercise4/OUT"</value>
+					<value>/user/user01/lab2/exercise4/OUT</value>
 				</property>
 			</configuration>
 		</map-reduce>
@@ -36,5 +36,5 @@
 		<message>Exercise 4 failed with error message: [${wf:errorMessage(wf:lastErrorNode())}]</message>
 	</kill>
 
-	<end name="stdev-calc"/>
+	<end name="end"/>
 </workflow-app>

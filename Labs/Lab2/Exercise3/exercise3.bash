@@ -9,6 +9,13 @@ hive -f hive-iris.ql
 
 #su root
 #mysql > USE default;
-#mysql > CREATE TABLE iris_table (id INT NOT NULL AUTO_INCREMENT, sepalLength FLOAT NOT NULL, sepalWidth FLOAT NOT NULL, petalLength FLOAT NOT NULL, petalWidth FLOAT NOT NULL, PRIMARY KEY (id) );
+#mysql > CREATE TABLE iris_table (sepalLength FLOAT NOT NULL, sepalWidth FLOAT NOT NULL, petalLength FLOAT NOT NULL, petalWidth FLOAT NOT NULL, PRIMARY KEY (id) );
+#/etc/init.d/mysqld start
+#mysql -u root
+#mysqladmin create default;
 
+#USE default;
+#DROP TABLE `iris-table`;
+#CREATE TABLE `iris-table` (sepalLength FLOAT, sepalWidth FLOAT, petalLength FLOAT, petalWidth FLOAT, flowerID FLOAT );
+#select * from `iris-table`;
 

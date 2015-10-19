@@ -1,4 +1,4 @@
-<workflow-app  xmlns="uri:oozie:workflow:0.1" name="zayd_hammoudeh_lab2_exercise4">
+<workflow-app xmlns="uri:oozie:workflow:0.3" name="aggregator-wf">
 	<start to="stdev-calc"/>
 
 	<action name="stdev-calc">
@@ -19,7 +19,7 @@
 				</property>
 				<property>
 					<name>mapred.input.dir</name>
-					<value>"/home/user01/CS286/Labs/Lab2/Exercise4/STDEV/DATA"</value>
+					<value>"/user/user01/lab2/exercise4/DATA"</value>
 				</property>
 				<property>
 					<name>mapred.output.dir</name>

@@ -3,7 +3,7 @@
 # Put the data in the HDFS location called by the oozie flow
 hadoop fs -rmr /user/user01/lab2/exercise4/DATA
 hadoop fs -mkdir /user/user01/lab2/exercise4/DATA
-hadoop fs -put DATA/data.txt /user/user01/lab2/exercise4/DATA
+hadoop fs -put DATA/iris-data.txt /user/user01/lab2/exercise4/DATA
 
 # Delete any existing directory for lab 2 exercise 4
 hadoop fs -rmr /user/user01/lab2/exercise4/zayd_hammoudeh_lab2_exercise4

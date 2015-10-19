@@ -10,3 +10,5 @@ javac -d classes StdevReducer.java
 jar -cvf Stdev.jar -C classes/ .
 javac -classpath $CLASSPATH:Stdev.jar -d classes StdevDriver.java
 jar -uvf Stdev.jar -C classes/ .
+
+cp Stdev.jar zayd_hammoudeh_lab2_exercise4/lib

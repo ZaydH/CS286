@@ -13,11 +13,14 @@ public class StdevMapper extends Mapper <LongWritable,Text,Text,Text> {
 	
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 			
-			// Key for the mean calculation is first alphabetically
-			context.write(new Text("mean"), value);
-			// Key for the standard deviation calculation is second alphabetically
-			// Value for both is identical since we will calculate the difference twice.
-			context.write(new Text("stdev"), value);
+		String[] tempString = value.toString().split("\\s+");
+			
+		// Key for the mean calculation is first alphabetically
+		context.write(new Text(tempString[4] + "_mean"), new Text(tempString[2]) );
+
+		// Key for the standard deviation calculation is second alphabetically
+		// Value for both is identical since we will calculate the difference twice.
+		context.write(new Text(tempString[4] + "_stdev"), new Text(tempString[2]) );
 
    }
 }

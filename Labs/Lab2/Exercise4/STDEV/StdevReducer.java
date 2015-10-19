@@ -16,9 +16,9 @@ public class StdevReducer  extends Reducer <Text,Text,Text,FloatWritable> {
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
 		// Initialize the variable values
-		String keyStr = key.toString();
+		String[] keyStr = key.toString().split("_");
 
-		if(keyStr.equals("mean")){
+		if(keyStr[1].equals("mean")){
 			itemCount = 0;
 			mean = 0;
 			
@@ -40,7 +40,7 @@ public class StdevReducer  extends Reducer <Text,Text,Text,FloatWritable> {
 			stdDev = (float)Math.pow( stdDev / (itemCount), 0.5);
 			
 			// TODO emit output to context
-			context.write(key, new FloatWritable(stdDev));
+			context.write(new Text(keyStr[0]), new FloatWritable(stdDev));
 		} 
 
 

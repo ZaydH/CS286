@@ -1,13 +1,10 @@
-<workflow-app xmlns="uri:oozie:workflow:0.4" name="aggregator-wf">
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="aggregator-wf">
 	<start to="stdev-calc"/>
 
 	<action name="stdev-calc">
 		<map-reduce>
-	            <job-tracker>${jobTracker}</job-tracker>
-        	    <name-node>"${nameNode}"</name-node>
-			<prepare>
-				<delete path="/user/user01/lab2/exercise4/OUT"/>
-			</prepare>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>"${nameNode}"</name-node>
 			<configuration>
 				<property>
 					<name>mapred.mapper.class</name>

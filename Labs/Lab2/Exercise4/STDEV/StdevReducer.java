@@ -37,7 +37,7 @@ public class StdevReducer  extends Reducer <Text,Text,Text,FloatWritable> {
 			for(Text value: values){
 				stdDev += Math.pow(Float.parseFloat(value.toString()) - mean, 2);
 			}
-			stdDev = (float)Math.pow( stdDev / (itemCount - 1), 0.5);
+			stdDev = (float)Math.pow( stdDev / (itemCount), 0.5);
 			
 			// TODO emit output to context
 			context.write(key, new FloatWritable(stdDev));

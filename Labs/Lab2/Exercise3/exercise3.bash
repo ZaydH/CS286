@@ -1,11 +1,11 @@
 export HIVE_HOME=/opt/mapr/hive/hive-1.0/
 export PATH=$PATH:$HIVE_HOME/bin
 
-hadoop fs -mkdir -p /user/user01/lab2/exercise3/DATA
+hadoop fs -mkdir -p /user/user01/
 
-cp iris-data.txt /user/user01/lab2/exercise3/DATA
+cp iris-data.txt /user/user01/
 
-hive -f exercise3.hql
+hive -f hive-iris.ql
 
 #su root
 #mysql > USE default;

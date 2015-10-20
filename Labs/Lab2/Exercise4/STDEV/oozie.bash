@@ -1,8 +1,9 @@
-#export OOZIE_URL='http://mapr1node:11000/oozie'
+export OOZIE_URL='http://mapr1node:11000/oozie'
+JobTracker=mapr1node:8032
 
 # Put the data in the HDFS location called by the oozie flow
 hadoop fs -rmr /user/user01/lab2/exercise4/DATA
-hadoop fs -mkdir /user/user01/lab2/exercise4/DATA
+hadoop fs -mkdir -p /user/user01/lab2/exercise4/DATA
 hadoop fs -put DATA/iris-data.txt /user/user01/lab2/exercise4/DATA
 
 # Delete any existing directory for lab 2 exercise 4

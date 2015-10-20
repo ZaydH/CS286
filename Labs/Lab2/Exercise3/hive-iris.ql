@@ -6,9 +6,9 @@ CREATE TABLE iris_table(sepalLength FLOAT, sepalWidth FLOAT, petalLength FLOAT, 
 
 LOAD DATA INPATH '/user/user01/iris-data.txt' OVERWRITE INTO TABLE iris_table;
 
-SELECT MAX(sepalLength) as maxSepalLength from iris_table;
+INSERT OVERWRITE LOCAL DIRECTORY '/user/user01/iris_hive_out/max' SELECT MAX(sepalLength) as maxSepalLength from iris_table;
 --SET maxSepalLength;
-SELECT MIN(sepalLength) as minSepalLength from iris_table;
+INSERT OVERWRITE LOCAL DIRECTORY '/user/user01/iris_hive_out/min' SELECT MIN(sepalLength) as minSepalLength from iris_table;
 --SET minSepalLength;
-SELECT AVG(sepalLength) as avgSepalLength from iris_table;
+INSERT OVERWRITE LOCAL DIRECTORY '/user/user01/iris_hive_out/avg' SELECT AVG(sepalLength) as avgSepalLength from iris_table;
 --SET avgSepalLength;

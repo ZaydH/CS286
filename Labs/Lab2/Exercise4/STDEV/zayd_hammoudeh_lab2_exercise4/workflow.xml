@@ -4,7 +4,7 @@
 	<action name="stdev-calc">
 		<map-reduce>
 			<job-tracker>${jobTracker}</job-tracker>
-			<name-node>"${nameNode}"</name-node>
+			<name-node>${nameNode}</name-node>
 			<configuration>
 				<property>
 					<name>mapred.mapper.class</name>

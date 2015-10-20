@@ -1,10 +1,13 @@
 export OOZIE_URL='http://mapr1node:11000/oozie'
+export OOZIE_HOME=/opt/mapr/oozie/oozie-4.1.0
+export PATH=$PATH:$OOZIE_HOME/bin
+
 #JobTracker=mapr1node:8032
 
-export HADOOP_HOME=/opt/mapr/hadoop/hadoop-0.20.2
-export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64
-export CLASSPATH=$HADOOP_HOME/lib/*:$HADOOP_HOME/*
-export HADOOP_CLASSPATH=$CLASSPATH
+#export HADOOP_HOME=/opt/mapr/hadoop/hadoop-0.20.2
+#export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64
+#export CLASSPATH=$HADOOP_HOME/lib/*:$HADOOP_HOME/*
+#export HADOOP_CLASSPATH=$CLASSPATH
 
 
 # Put the data in the HDFS location called by the oozie flow

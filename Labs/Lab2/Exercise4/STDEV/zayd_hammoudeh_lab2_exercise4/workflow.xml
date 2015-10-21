@@ -6,20 +6,47 @@
 			<job-tracker>${jobTracker}</job-tracker>
 			<name-node>${nameNode}</name-node>
 			<configuration>
+
+                                <property>
+                                        <name>mapred.mapper.new-api</name>
+                                        <value>true</value>
+                                </property>
+                                <property>
+                                        <name>mapred.reducer.new-api</name>
+                                        <value>true</value>
+                                </property>
+
 				<property>
-					<name>mapred.mapper.class</name>
+					<name>mapreduce.job.map.class</name>
 					<value>Stdev.StdevMapper</value>
 				</property>
 				<property>
-					<name>mapred.reducer.class</name>
+					<name>mapreduce.job.reduce.class</name>
 					<value>Stdev.StdevReducer</value>
 				</property>
+
+                		<property>
+		                	<name>mapreduce.job.inputformat.class</name>
+                			<value>org.apache.hadoop.mapreduce.lib.input.TextInputFormat</value>
+		                </property>
+
+
+		                <property>
+                		    <name>mapreduce.job.output.key.class</name>
+		                    <value>org.apache.hadoop.io.Text</value>
+		                </property>
+	                	<property>
+        		            <name>mapreduce.job.output.value.class</name>
+	        	            <value>org.apache.hadoop.io.Text</value>
+        	        	</property>
+
+
+                                <property>
+                                        <name>mapreduce.input.fileinputformat.inputdir</name>
+                                        <value>/user/user01/lab2/exercise4/DATA</value>
+                                </property>
 				<property>
-					<name>mapred.input.dir</name>
-					<value>/user/user01/lab2/exercise4/DATA</value>
-				</property>
-				<property>
-					<name>mapred.output.dir</name>
+					<name>mapreduce.output.fileoutputformat.outputdir</name>
 					<value>/user/user01/lab2/exercise4/OUT</value>
 				</property>
 			</configuration>

@@ -1,4 +1,4 @@
-<workflow-app xmlns="uri:oozie:workflow:0.2" name="aggregator-wf">
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="zayd_hammoudeh_lab2_exercise4">
 	<start to="stdev-calc"/>
 
 	<action name="stdev-calc">
@@ -7,7 +7,7 @@
 			<name-node>${nameNode}</name-node>
 			<configuration>
 
-                                <property>
+				<property>
                                         <name>mapred.mapper.new-api</name>
                                         <value>true</value>
                                 </property>

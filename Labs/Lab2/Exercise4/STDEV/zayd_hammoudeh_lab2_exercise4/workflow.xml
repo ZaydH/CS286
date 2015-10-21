@@ -5,6 +5,8 @@
 		<map-reduce>
 			<job-tracker>${jobTracker}</job-tracker>
 			<name-node>${nameNode}</name-node>
+			<prepare>
+			</prepare>
 			<configuration>
 
 				<property>
@@ -37,7 +39,7 @@
 		                </property>
 	                	<property>
         		            <name>mapreduce.job.output.value.class</name>
-	        	            <value>org.apache.hadoop.io.Text</value>
+	        	            <value>org.apache.hadoop.io.FloatWritable</value>
         	        	</property>
 
 

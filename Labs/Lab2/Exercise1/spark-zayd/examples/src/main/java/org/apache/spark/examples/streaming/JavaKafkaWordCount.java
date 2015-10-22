@@ -106,7 +106,7 @@ public final class JavaKafkaWordCount {
         }
       });
 
-    wordCounts.print();
+    lines.print();
     jssc.start();
     jssc.awaitTermination();
   }

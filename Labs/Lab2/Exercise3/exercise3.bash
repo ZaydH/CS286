@@ -15,7 +15,7 @@ hive -f hive-iris.ql
 #mysqladmin create default;
 
 #USE default;
-#DROP TABLE `iris-table`;
-#CREATE TABLE `iris-table` (sepalLength FLOAT, sepalWidth FLOAT, petalLength FLOAT, petalWidth FLOAT, flowerID FLOAT );
-#select * from `iris-table`;
+#DROP TABLE iris_table;
+#CREATE TABLE iris_table (sepalLength FLOAT, sepalWidth FLOAT, petalLength FLOAT, petalWidth FLOAT, flowerID FLOAT );
+#select * from iris_table;
 

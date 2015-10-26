@@ -36,6 +36,7 @@ zip -r zayd_hammoudeh_lab2.zip . > /dev/null
 mv zayd_hammoudeh_lab2.zip ..
 cd ..
 
+rm -rf /user/user01/*
 cp -r $SUBMISSION_DIR/* /user/user01/
 
 echo "Submission building completed."

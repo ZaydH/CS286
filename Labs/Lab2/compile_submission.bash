@@ -5,6 +5,8 @@ cp Exercise1/start-pipeline.sh $SUBMISSION_DIR/start-pipeline.sh
 cp Exercise1/kafka-flume.conf $SUBMISSION_DIR/kafka-flume.conf
 cp Exercise1/rebuild.sh $SUBMISSION_DIR/rebuild.sh
 cp Exercise1/rerun.sh $SUBMISSION_DIR/rerun.sh
+rm -rf Exercise1/spark-zayd/target
+cp -r Exercise1/spark-zayd
 
 
 # Copy the Files for Exercise 2
@@ -15,3 +17,6 @@ cp Exercise2/rsyslog.conf $SUBMISSION_DIR/rsyslog.conf
 cp Exercise3/hive-iris.ql $SUBMISSION_DIR/hive-iris.ql
 cp Exercise3/iris-sqoop-2-mysql.sh $SUBMISSION_DIR/iris-sqoop-2-mysql.sh
 
+
+
+cp -r zayd_hammoudeh /user/user01/zayd_hammoudeh

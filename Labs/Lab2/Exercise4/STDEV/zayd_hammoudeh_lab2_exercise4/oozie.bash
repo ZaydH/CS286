@@ -4,11 +4,10 @@ export PATH=$PATH:$OOZIE_HOME/bin
 
 
 # Put the data in the HDFS location called by the oozie flow
-hadoop fs -rmr /user/user01/exercise4/DATA
-hadoop fs -mkdir -p /user/user01/exercise4/DATA
-hadoop fs -put iris-data.txt /user/user01/exercise4/DATA
-hadoop fs -rmr /user/user01/exercise4/OUT
-hadoop fs -mkdir /user/user01/exercise4
+hadoop fs -rmr /user/user01/DATA
+hadoop fs -mkdir -p /user/user01/DATA
+hadoop fs -put iris-data.txt /user/user01/DATA
+hadoop fs -rmr /user/user01/OUT
 
 # Put a new copy of lab 2 exercise 4 files
 hadoop fs -put lib /user/user01/

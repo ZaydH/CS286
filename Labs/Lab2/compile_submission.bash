@@ -21,12 +21,12 @@ cp Exercise2/flume.bash $SUBMISSION_DIR
 # Copy the files for Exercise 3
 cp Exercise3/hive-iris.ql $SUBMISSION_DIR/hive-iris.ql
 cp Exercise3/iris-sqoop-2-mysql.sh $SUBMISSION_DIR/iris-sqoop-2-mysql.sh
-cp Exercise3/iris-data.txt /user/user01
+cp Exercise3/iris-data.txt $SUBMISSION_DIR 
 cp Exercise3/exercise3.bash $SUBMISSION_DIR
 
 # Copy the files for Exercise #4
 #cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR
-cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/oozie_test.sh
+#cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/oozie_test.sh
 cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/* $SUBMISSION_DIR
 cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
 

@@ -6,7 +6,7 @@ cp Exercise1/kafka-flume.conf $SUBMISSION_DIR/kafka-flume.conf
 cp Exercise1/rebuild.sh $SUBMISSION_DIR/rebuild.sh
 cp Exercise1/rerun.sh $SUBMISSION_DIR/rerun.sh
 rm -rf Exercise1/spark-zayd/target
-cp -r Exercise1/spark-zayd
+cp -r Exercise1/spark-zayd zayd_hammoudeh
 
 
 # Copy the Files for Exercise 2

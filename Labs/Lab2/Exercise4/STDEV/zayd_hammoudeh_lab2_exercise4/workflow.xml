@@ -39,7 +39,7 @@
 		                </property>
 	                	<property>
         		            <name>mapreduce.job.output.value.class</name>
-	        	            <value>org.apache.hadoop.io.FloatWritable</value>
+	        	            <value>org.apache.hadoop.io.Text</value>
         	        	</property>
 
 

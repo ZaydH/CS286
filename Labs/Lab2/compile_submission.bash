@@ -28,9 +28,9 @@ cp Exercise3/exercise3.bash $SUBMISSION_DIR
 #cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR
 #cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/oozie_test.sh
 cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/* $SUBMISSION_DIR
-cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
+#cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
 
-# Builz the submission zip
+# Build the submission zip
 cd $SUBMISSION_DIR
 zip -r zayd_hammoudeh_lab2.zip . > /dev/null
 mv zayd_hammoudeh_lab2.zip ..

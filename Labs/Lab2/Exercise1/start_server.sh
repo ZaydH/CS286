@@ -3,7 +3,7 @@
 export KAFKA_DIR="/user/user01/LAB2/E1/KAFKA/kafka_2.10-0.8.2.2"
 
 # Start the kafka server
-$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties &
+$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties 
 sleep 10 # Wait for the kafka server to start
 
 # Create a "cs286" topic

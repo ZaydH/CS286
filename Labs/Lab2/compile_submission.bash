@@ -30,7 +30,10 @@ cp Exercise3/exercise3.bash $SUBMISSION_DIR
 #cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR
 #cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/oozie_test.sh
 cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/* $SUBMISSION_DIR
+cp Exercise4/STDEV/StdevMapper.java $SUBMISSION_DIR
+cp Exercise4/STDEV/StdevReducer.java $SUBMISSION_DIR
 #cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
+
 
 # Build the submission zip
 cd $SUBMISSION_DIR

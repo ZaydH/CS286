@@ -185,7 +185,7 @@ ssl-cipher                        (No default value)
 ssl-key                           (No default value)
 ssl-verify-server-cert            FALSE
 table                             FALSE
-user                              (No default value)
+user                              user01
 safe-updates                      FALSE
 i-am-a-dummy                      FALSE
 connect_timeout                   0

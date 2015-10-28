@@ -1,4 +1,6 @@
-export SUBMISSION_DIR="submission"
+export SUBMISSION_DIR=submission
+export DEFAULT_KAFKA_DIR=/opt/kafka
+export LAB_KAFKA_DIR=/user/user01/LAB2/E1/KAFKA/kafka_2.10-0.8.2.2
 
 # Clean any previous versions of the submission directory.
 rm -rf $SUBMISSION_DIR
@@ -38,5 +40,7 @@ cd ..
 
 rm -rf /user/user01/*
 cp -r $SUBMISSION_DIR/* /user/user01/
+mkdir -p $LAB_KAFKA_DIR
+cp -r $DEFAULT_KAFKA_DIR/*  $LAB_KAFKA_DIR
 
 echo "Submission building completed."

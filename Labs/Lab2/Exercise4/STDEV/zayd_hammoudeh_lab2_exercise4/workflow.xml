@@ -6,7 +6,7 @@
 			<job-tracker>${jobTracker}</job-tracker>
 			<name-node>${nameNode}</name-node>
 			<prepare>
-				<delete path=/user/user01/oozie_iris_stdev>
+				<delete path="/user/user01/oozie_iris_stdev"/>
 			</prepare>
 			<configuration>
 

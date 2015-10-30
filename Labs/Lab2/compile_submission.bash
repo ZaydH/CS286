@@ -18,6 +18,7 @@ cp Exercise1/start-pipeline.sh $SUBMISSION_DIR/$EXERCISE1_DIR/start-pipeline.sh
 cp Exercise1/kafka-flume.conf $SUBMISSION_DIR/$EXERCISE1_DIR/kafka-flume.conf
 cp Exercise1/rebuild.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rebuild.sh
 cp Exercise1/rerun.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rerun.sh
+cp /etc/rsyslog.conf $SUBMISSION_DIR/$EXERCISE1_DIR
 rm -rf Exercise1/spark-zayd/examples/target > /dev/null
 cp -r Exercise1/spark-zayd $SUBMISSION_DIR/$EXERCISE1_DIR
 

@@ -7,6 +7,7 @@ export HADOOP_CLASSPATH=$CLASSPATH
 
 export JAR_NAME=Iris
 
+mkdir classes
 javac -d classes StdevMapper.java
 javac -d classes StdevReducer.java
 jar -cvf $JAR_NAME.jar -C classes/ .

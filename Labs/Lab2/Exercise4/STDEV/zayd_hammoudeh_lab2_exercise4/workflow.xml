@@ -50,7 +50,7 @@
                                 </property>
 				<property>
 					<name>mapreduce.output.fileoutputformat.outputdir</name>
-					<value>/user/user01/OUT</value>
+					<value>/user/user01/oozie_iris_stdev</value>
 				</property>
 			</configuration>
 		</map-reduce>

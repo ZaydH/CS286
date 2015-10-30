@@ -61,6 +61,7 @@ cd ..
 
 # Transfer the submission zip to /user/user01 
 rm -rf /user/user01/*
+cp Exercise3/iris-data.txt /user/user01
 cp $FINAL_DIRECTORY.zip /user/user01/
 unzip /user/user01/$FINAL_DIRECTORY.zip -d /user/user01 > /dev/null
 mv /user/user01/$FINAL_DIRECTORY /user/user01/LAB2_SUBMISSION

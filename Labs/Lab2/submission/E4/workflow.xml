@@ -1,0 +1,66 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="zayd_hammoudeh_lab2_exercise4">
+	<start to="stdev-calc"/>
+
+	<action name="stdev-calc">
+		<map-reduce>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+			</prepare>
+			<configuration>
+
+				<property>
+                                        <name>mapred.mapper.new-api</name>
+                                        <value>true</value>
+                                </property>
+                                <property>
+                                        <name>mapred.reducer.new-api</name>
+                                        <value>true</value>
+                                </property>
+
+				<property>
+					<name>mapreduce.job.map.class</name>
+					<value>Stdev.StdevMapper</value>
+				</property>
+				<property>
+					<name>mapreduce.job.reduce.class</name>
+					<value>Stdev.StdevReducer</value>
+				</property>
+
+                		<property>
+		                	<name>mapreduce.job.inputformat.class</name>
+                			<value>org.apache.hadoop.mapreduce.lib.input.TextInputFormat</value>
+		                </property>
+
+
+		                <property>
+                		    <name>mapreduce.job.output.key.class</name>
+		                    <value>org.apache.hadoop.io.Text</value>
+		                </property>
+	                	<property>
+        		            <name>mapreduce.job.output.value.class</name>
+	        	            <value>org.apache.hadoop.io.Text</value>
+        	        	</property>
+
+
+                                <property>
+                                        <name>mapreduce.input.fileinputformat.inputdir</name>
+                                        <value>/user/user01/DATA</value>
+                                </property>
+				<property>
+					<name>mapreduce.output.fileoutputformat.outputdir</name>
+					<value>/user/user01/OUT</value>
+				</property>
+			</configuration>
+		</map-reduce>
+
+		<ok to="end"/>
+		<error to="fail"/>
+	</action>
+
+	<kill name="fail">
+		<message>Exercise 4 failed with error message: [${wf:errorMessage(wf:lastErrorNode())}]</message>
+	</kill>
+
+	<end name="end"/>
+</workflow-app>

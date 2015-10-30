@@ -3,6 +3,7 @@ export EXERCISE1_DIR=E1
 export EXERCISE2_DIR=E2
 export EXERCISE3_DIR=E3
 export EXERCISE4_DIR=E4
+export FINAL_DIRECTORY=ZAYD_HAMMOUDEH_LAB2_SUBMISSION
 
 export DEFAULT_KAFKA_DIR=/opt/kafka
 export LAB_KAFKA_DIR=/user/user01/LAB2/E1/KAFKA/kafka_2.10-0.8.2.2
@@ -36,25 +37,38 @@ cp Exercise3/exercise3.bash $SUBMISSION_DIR/$EXERCISE3_DIR
 
 # Copy the files for Exercise #4
 mkdir -p $SUBMISSION_DIR/$EXERCISE4_DIR
-#cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR
-#cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/oozie_test.sh
-cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/* $SUBMISSION_DIR
-cp Exercise4/STDEV/StdevMapper.java $SUBMISSION_DIR
-cp Exercise4/STDEV/StdevReducer.java $SUBMISSION_DIR
+#cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR/$EXERCISE4_DIR
+#cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/$EXERCISE4_DIR/oozie_test.sh
+cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/job.properties $SUBMISSION_DIR/$EXERCISE4_DIR
+cp -r Exercise4/STDEV/zayd_hammoudeh_lab2_exercise4/workflow.xml $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/StdevMapper.java $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/StdevReducer.java $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/StdevDriver.java $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/$EXERCISE4_DIR
 #cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
-
-mkdir 
 
 # Build the submission zip
 cd $SUBMISSION_DIR
-zip -r $EXERCISE1_DIR.zip $EXERCISE1_DIR > /dev/null
-zip -r $EXERCISE2_DIR.zip $EXERCISE2_DIR > /dev/null
-zip -r $EXERCISE3_DIR.zip $EXERCISE3_DIR > /dev/null
-zip -r $EXERCISE4_DIR.zip $EXERCISE4_DIR > /dev/null
+mkdir $FINAL_DIRECTORY
+zip -r $FINAL_DIRECTORY/$EXERCISE1_DIR.zip $EXERCISE1_DIR > /dev/null
+zip -r $FINAL_DIRECTORY/$EXERCISE2_DIR.zip $EXERCISE2_DIR > /dev/null
+zip -r $FINAL_DIRECTORY/$EXERCISE3_DIR.zip $EXERCISE3_DIR > /dev/null
+zip -r $FINAL_DIRECTORY/$EXERCISE4_DIR.zip $EXERCISE4_DIR > /dev/null
+zip -r ../$FINAL_DIRECTORY.zip $FINAL_DIRECTORY > /dev/null
 cd ..
 
+# Transfer the submission zip to /user/user01 
 rm -rf /user/user01/*
-cp -r $SUBMISSION_DIR/* /user/user01/
+cp $FINAL_DIRECTORY.zip /user/user01/
+unzip /user/user01/$FINAL_DIRECTORY.zip -d /user/user01 > /dev/null
+mv /user/user01/$FINAL_DIRECTORY /user/user01/LAB2_SUBMISSION
+unzip /user/user01/LAB2_SUBMISSION/$EXERCISE1_DIR.zip -d /user/user01/LAB2_SUBMISSION > /dev/null 
+unzip /user/user01/LAB2_SUBMISSION/$EXERCISE2_DIR.zip -d /user/user01/LAB2_SUBMISSION > /dev/null
+unzip /user/user01/LAB2_SUBMISSION/$EXERCISE3_DIR.zip -d /user/user01/LAB2_SUBMISSION > /dev/null
+unzip /user/user01/LAB2_SUBMISSION/$EXERCISE4_DIR.zip -d /user/user01/LAB2_SUBMISSION > /dev/null
+
+# Make the Kafka test folder
 mkdir -p $LAB_KAFKA_DIR
 cp -r $DEFAULT_KAFKA_DIR/*  $LAB_KAFKA_DIR
 

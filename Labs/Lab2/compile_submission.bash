@@ -48,6 +48,7 @@ cp Exercise4/STDEV/StdevReducer.java $SUBMISSION_DIR/$EXERCISE4_DIR
 cp Exercise4/STDEV/StdevDriver.java $SUBMISSION_DIR/$EXERCISE4_DIR
 cp Exercise4/STDEV/rebuild.sh $SUBMISSION_DIR/$EXERCISE4_DIR
 cp Exercise4/STDEV/rerun.sh $SUBMISSION_DIR/$EXERCISE4_DIR
+cp Exercise4/STDEV/oozie.bash $SUBMISSION_DIR/$EXERCISE4_DIR
 #cp -r Exercise4/STDEV/DATA $SUBMISSION_DIR
 
 # Build the submission zip

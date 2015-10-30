@@ -14,6 +14,7 @@ mkdir $SUBMISSION_DIR
 
 # Copy the Files for Exercise 1
 mkdir -p $SUBMISSION_DIR/$EXERCISE1_DIR
+cp Exercise1/start_server.sh $SUBMISSION_DIR/$EXERCISE1_DIR/
 cp Exercise1/start-pipeline.sh $SUBMISSION_DIR/$EXERCISE1_DIR/start-pipeline.sh
 cp Exercise1/kafka-flume.conf $SUBMISSION_DIR/$EXERCISE1_DIR/kafka-flume.conf
 cp Exercise1/rebuild.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rebuild.sh

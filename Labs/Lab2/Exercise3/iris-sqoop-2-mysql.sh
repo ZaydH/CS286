@@ -12,7 +12,7 @@ echo "Table successfully created."
 
 # Transfer the data from Hive to MySQL via Sqoop
 echo "Copying the data from Hive to MySQL via Scoop"
-sqoop export --connect jdbc:mysql://localhost/default --username root --table iris_table --export-dir /user/hive/warehouse/iris_table/ --fields-terminated-by '\t'
+sqoop export --connect jdbc:mysql://localhost/default --username user01 --password mapr --table iris_table --export-dir /user/hive/warehouse/iris_table/ --fields-terminated-by '\t'
 echo "Data transfer successful."
 
 

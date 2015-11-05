@@ -1,11 +1,11 @@
 export HIVE_HOME=/opt/mapr/hive/hive-1.0/
 export PATH=$PATH:$HIVE_HOME/bin
 
-hadoop fs -mkdir -p /user/user01/
-
-cp iris-data.txt /user/user01/
-
 hive -f hive-iris.ql
+
+echo "Print the mean petal length for flowerID \"0.0\"."
+hadoop fs -cat /user/user01/iris_hive_out/000000_0
+
 
 #su root
 #mysql > USE default;

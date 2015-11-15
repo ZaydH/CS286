@@ -5,21 +5,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
 
 import lab3.PointSet.DistanceMetric;
 
-public class KMeans {
+public class KNN {
 
 	private static final int INPUT_ARGUMENT_COUNT = 5;
 	
-	private PointSet allPoints;
-	private PointSet.Centroid[] centroid;
+	private PointSet trainingSet;
+	private PointSet testSet;
 	private DistanceMetric calc;
 	private File outputFile;
 	
-	int k = -1;				// Number of Centroids
-	int maxIterations = -1;	// Maximum number of iterations for KMeans
+	int k = -1;				// Number of Nearest Neighbors
 	
 	public static void main(String args[]){
 		
@@ -34,7 +32,7 @@ public class KMeans {
 		}
 		
 		// Build the dataset
-		KMeans kmeans = new KMeans(args[0], args[1], args[2], args[3], args[4] );
+		KNN knn = new KNN(args[0], args[1], args[2], args[3], args[4] );
 		
 		// Perform the clustering.
 		kmeans.performClustering();
@@ -42,7 +40,7 @@ public class KMeans {
 	}
 	
 	
-	public KMeans(String k, String maxIterations, String distanceMetric, String inputFilePath, String outputFilePath){
+	public KNN(String k, String testSetFilePath, String distanceMetric, String trainingSetFilePath, String outputFilePath){
 		
 		
 		/*************************************************************************/
@@ -56,11 +54,10 @@ public class KMeans {
 			System.err.println("Invalid value of k."); 
 			System.exit(1);
 		}
-		// Verify that maxIterations is valid
-		try{ this.maxIterations = Integer.parseInt(maxIterations);	}
-		catch(Exception e){ System.err.println("Invalid value for the maximum number of iterations."); System.exit(1);}
-		if( this.maxIterations <= 0 ){
-			System.err.println("Invalid value for the maximum number of iterations."); 
+		// Get the input file and verify it exists.
+		File testSetFile = new File(testSetFilePath);
+		if(!testSetFile.exists() || testSetFile.isDirectory()){
+			System.err.println("Invalid test set file path."); 
 			System.exit(1);
 		}
 		// Verify and parse the distance metric
@@ -73,9 +70,9 @@ public class KMeans {
 			System.exit(1);
 		}
 		// Get the input file and verify it exists.
-		File inputFile = new File(inputFilePath);
-		if(!inputFile.exists() || inputFile.isDirectory()){
-			System.err.println("Invalid input file."); 
+		File trainingSetFile = new File(trainingSetFilePath);
+		if(!trainingSetFile.exists() || trainingSetFile.isDirectory()){
+			System.err.println("Invalid input file path."); 
 			System.exit(1);
 		}
 		// Get the output file and verify it exists.
@@ -90,80 +87,19 @@ public class KMeans {
 		/*************************************************************************/
 		
 		// Build the point set.
-		allPoints = PointSet.readPointsFile(inputFile);
+		trainingSet = PointSet.readPointsFile(trainingSetFile);
 		
-		// Initialize the centroids.
-		centroid = new PointSet.Centroid[this.k];
-		for(int i = 0; i < this.k; i++)
-			centroid[i] = new PointSet.Centroid( allPoints.get(i) );
-	}
-	
-	
-	public void performClustering(){
-		
-		// Go through the maximum number of iterations.
-		for(int i = 0; i < maxIterations; i++)
-			this.iteration();
-		
-		// Output the clustering results.
-		this.outputResults();
+
 	}
 	
 	
 	
-	public void iteration(){
-		
-		// Get all the points in the point set
-		PointSet.SimplePoint[] pointArr = allPoints.getPoints();
-		
-		// Before starting the next iteration, clear the points in the centroid.
-		for(PointSet.Centroid tempCentroid : centroid)
-			tempCentroid.clearPoints();
-		
-		// Iterate through all of the points and determine the distance from the point to each centroid.
-		for(PointSet.SimplePoint point : pointArr){
-			
-			// Determine the closest centroid.
-			double bestDistance = centroid[0].calculateDistance(point, this.calc);
-			int closestCentroid = 0;
-			for(int i = 1; i < this.k; i++){
-				double centroidDistance = centroid[i].calculateDistance(point, this.calc);
-				if(centroidDistance < bestDistance){
-					closestCentroid = i;
-					bestDistance = centroidDistance;
-				}
-			}
-			
-			point.setClassNumber(Integer.toString(closestCentroid + 1));
-			// Add the point to the closest centroid.
-			centroid[closestCentroid].addPoint(point);
-		}
-		
-		// Verify that all centroids have at least 1 point.
-		for(int i = 0; i < this.k; i++){
-			if(centroid[i].getNumbPoints() > 0) continue;
-			
-			// Get a random point from another centroid.
-			for(int j = 0; j < this.k; j++){
-				// Ensure this cluster is a valid one to get a point from.
-				if(i == j || centroid[j].getNumbPoints() < 2)
-					continue;
-				// Take a point from this centroid.
-				centroid[i].addPoint(centroid[j].popPoint());
-			}
-		}
-		
-		// Update the centroids
-		for(PointSet.Centroid tempCentroid : centroid)
-			tempCentroid.updateCentroid();
+	public void performClassification(){
 		
 	}
-	
-	
 	
 	
 	public void outputResults(){
-		
 		try{
 			BufferedWriter fileOut = new BufferedWriter(new FileWriter(outputFile)); // Open the file containing the algorithm comparison results.
 
@@ -200,11 +136,8 @@ public class KMeans {
 			PointSet.SimplePoint[] pointsArr = this.allPoints.getPoints();
 			Arrays.sort(pointsArr);
 			// Print the point information to a file.
-			for(int i = 0; i < pointsArr.length; i++){
-				fileOut.write( pointsArr[i].toString() );
-				// Use this to prevent a blank new line at the end.
-				if(i + 1 != pointsArr.length) 
-					fileOut.newLine();
+			for(PointSet.SimplePoint point: pointsArr){
+				fileOut.write( point.toString() ); fileOut.newLine();
 			}
 			
 			

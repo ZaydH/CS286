@@ -29,7 +29,7 @@ public class PointSet {
             // Build the list of points
             while (input.hasNextLine()) {
                 String line = input.nextLine();
-                pointList.add( new SimplePoint(line, pointList.size()) );
+                pointList.add( new SimplePoint(line, pointList.size(), false) );
             }
             input.close();
 
@@ -80,13 +80,19 @@ public class PointSet {
 		 * 
 		 * @param data
 		 */
-		public SimplePoint(String dataLine, int id){
+		public SimplePoint(String dataLine, int id, boolean hasClass){
 			
 			this.dataLine = dataLine;
 			String[] data = dataLine.split(deliminator);
+			// Handle the case of a class value
+			int length;
+			if(hasClass)
+				length = data.length - 1;
+			else
+				length = data.length;
 			this.data = new double[data.length];
 			
-			for(int i = 0; i < data.length; i++){
+			for(int i = 0; i < length; i++){
 				try{
 					this.data[i] = Double.parseDouble(data[i]);
 				}catch(Exception e){
@@ -96,6 +102,12 @@ public class PointSet {
 			}
 			
 			this.id = id;
+			
+			// Store the class value if applicable.
+			if(hasClass)
+				classValue = data[length];
+			else
+				classValue = "XXXXXX";
 		}
 		
 

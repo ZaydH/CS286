@@ -191,7 +191,7 @@ public class PointSet {
 			assert(p1Data.length == p2Data.length);
 			
 			// Go through each dimension
-			double dot =0, p1Card = 0, p2Card=0;
+			double dot = 0, p1Card = 0, p2Card = 0;
 			for(int i = 0; i < p1Data.length; i++){
 				dot += p1Data[i] * p2Data[i];
 				
@@ -203,7 +203,7 @@ public class PointSet {
 			double distance = dot / (Math.sqrt(p1Card) * Math.sqrt(p2Card));
 			
 			// Take the square root and return.
-			return distance;
+			return 1 - distance;
 		}
 	}
 	

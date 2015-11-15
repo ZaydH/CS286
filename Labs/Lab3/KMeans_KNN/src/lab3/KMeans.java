@@ -134,7 +134,7 @@ public class KMeans {
 				}
 			}
 			
-			point.setClassNumber(closestCentroid + 1);
+			point.setClassNumber(Integer.toString(closestCentroid + 1));
 			// Add the point to the closest centroid.
 			centroid[closestCentroid].addPoint(point);
 		}
@@ -169,7 +169,7 @@ public class KMeans {
 
 			// Print the cluster information.
 			fileOut.write("k = " + this.k); fileOut.newLine();
-			Class calcClass = this.calc.getClass();
+			Class<? extends DistanceMetric> calcClass = this.calc.getClass();
 			Field calcNameField = calcClass.getField("NAME");
 			fileOut.write("DistanceMetric = " + calcNameField.get(null)); fileOut.newLine();
 			

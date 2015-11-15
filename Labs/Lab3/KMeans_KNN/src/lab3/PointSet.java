@@ -67,7 +67,7 @@ public class PointSet {
 		private double[] data;
 		private String dataLine;
 		private int id;
-		private int classNumb = -1; // Can be used to represent the cluster number or class number.
+		private String classValue = "XXXXX"; // Can be used to represent the cluster number or class number.
 		
 		public SimplePoint(double[] data, int id){
 			this.data = data;
@@ -99,8 +99,8 @@ public class PointSet {
 		}
 		
 
-		public void setClassNumber(int classNumb){ this.classNumb = classNumb; }
-		public int getClassNumber(){ return this.classNumb; }
+		public void setClassNumber(String classValue){ this.classValue = classValue; }
+		public String getClassValue(){ return this.classValue; }
 			
 		/**
 		 * Used to extract the data for a given point.
@@ -124,9 +124,25 @@ public class PointSet {
 		
 		
 		public String toString(){
-			return dataLine + deliminator + classNumb;
+			return dataLine + SimplePoint.deliminator + this.classValue;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * This interface class uses the strategy pattern to determine the distance

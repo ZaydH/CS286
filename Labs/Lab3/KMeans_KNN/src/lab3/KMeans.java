@@ -190,7 +190,8 @@ public class KMeans {
 			for(int i = 0; i < this.k; i++)
 				for(int j = i + 1; j < this.k; j++)
 					totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
-			fileOut.write("InterclusterDistance = " + totalInterclusterDistance/ ( (this.k * (this.k -1 )) / 2 )); fileOut.newLine();
+			double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
+			fileOut.write("InterclusterDistance = " + meanIntraclusterDifference); fileOut.newLine();
 			
 			fileOut.close();
 		}

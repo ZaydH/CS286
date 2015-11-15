@@ -1,21 +1,19 @@
 package lab3;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 
-import lab3.PointSet.CosineDistance;
 import lab3.PointSet.DistanceMetric;
-import lab3.PointSet.EuclideanDistance;
 
 public class KMeans {
 
 	private static final int INPUT_ARGUMENT_COUNT = 5;
-	private static final String COSINE_DISTANCE_INPUT_ARG_NAME = "cosine";
-	private static final String EUCLIDEAN_DISTANCE_INPUT_ARG_NAME = "cosine";
-	
 	
 	private PointSet allPoints;
-	private PointSet.Centroid centroids;
+	private PointSet.Centroid[] centroid;
 	private DistanceMetric calc;
+	private File outputFile;
 	
 	int k = -1;				// Number of Centroids
 	int maxIterations = -1;	// Maximum number of iterations for KMeans
@@ -31,6 +29,13 @@ public class KMeans {
 			System.err.println("Invalid number of input arguments."); 
 			System.exit(1);
 		}
+		
+		// Build the dataset
+		KMeans kmeans = new KMeans(args[0], args[1], args[2], args[3], args[4] );
+		
+		// Perform the clustering.
+		kmeans.performClustering();
+		
 
 	}
 	
@@ -57,23 +62,23 @@ public class KMeans {
 			System.exit(1);
 		}
 		// Verify and parse the distance metric
-		if(distanceMetric.equals(COSINE_DISTANCE_INPUT_ARG_NAME))
-			calc = new PointSet.CosineDistance();
-		else if(distanceMetric.equals(EUCLIDEAN_DISTANCE_INPUT_ARG_NAME))
-			calc = new PointSet.EuclideanDistance();
+		if(distanceMetric.equals(PointSet.CosineDistance.name))
+			this.calc = new PointSet.CosineDistance();
+		else if(distanceMetric.equals(PointSet.EuclideanDistance.name))
+			this.calc = new PointSet.EuclideanDistance();
 		else{
 			System.err.println("Invalid value for the distance metric."); 
 			System.exit(1);
 		}
 		// Get the input file and verify it exists.
 		File inputFile = new File(inputFilePath);
-		if(inputFile.exists() || inputFile.isDirectory()){
+		if(!inputFile.exists() || inputFile.isDirectory()){
 			System.err.println("Invalid input file."); 
 			System.exit(1);
 		}
 		// Get the output file and verify it exists.
-		File outputFile = new File(outputFilePath);
-		if(!outputFile.exists() && !outputFile.isDirectory()){
+		this.outputFile = new File(outputFilePath);
+		if(this.outputFile.exists()){
 			System.err.println("Invalid output file."); 
 			System.exit(1);
 		}
@@ -82,9 +87,90 @@ public class KMeans {
 		/*                      Build the KMeans Setup  						 */
 		/*************************************************************************/
 		
-		allPoints.readPointsFile(inputFile);
+		// Build the point set.
+		allPoints = PointSet.readPointsFile(inputFile);
+		
+		// Initialize the centroids.
+		centroid = new PointSet.Centroid[this.k];
+		for(int i = 0; i < this.k; i++)
+			centroid[i] = new PointSet.Centroid( allPoints.get(i) );
 	}
 	
 	
+	public void performClustering(){
+		
+		// Go through the maximum number of iterations.
+		for(int i = 0; i < maxIterations; i++)
+			this.iteration();
+		
+		
+	}
+	
+	
+	
+	public void iteration(){
+		
+		// Get all the points in the point set
+		PointSet.SimplePoint[] pointArr = allPoints.getPoints();
+		
+		// Iterate through all of the points and determine the distance from the point to each centroid.
+		for(PointSet.SimplePoint point : pointArr){
+			
+			// Determine the closest centroid.
+			double bestDistance = centroid[0].calculateDistance(point, this.calc);
+			int closestCentroid = 0;
+			for(int i = 1; i < this.k; i++){
+				double centroidDistance = centroid[i].calculateDistance(point, this.calc);
+				if(centroidDistance < bestDistance){
+					closestCentroid = i;
+					bestDistance = centroidDistance;
+				}
+			}
+			
+			// Add the point to the closest centroid.
+			centroid[closestCentroid].addPoint(point);
+		}
+		
+		// Verify that all centroids have at least 1 point.
+		for(int i = 0; i < this.k; i++){
+			if(centroid[i].getNumbPoints() > 0) continue;
+			
+			// Get a random point from another centroid.
+			for(int j = 0; j < this.k; j++){
+				// Ensure this cluster is a valid one to get a point from.
+				if(i == j || centroid[j].getNumbPoints() < 2)
+					continue;
+				// Take a point from this centroid.
+				centroid[i].addPoint(centroid[j].popPoint());
+			}
+		}
+		
+		// Update the centroids
+		for(PointSet.Centroid tempCentroid : centroid){
+			tempCentroid.updateCentroid();
+			tempCentroid.clearPoints();
+		}
+	}
+	
+	
+	
+	
+	public void outputResults(){
+		
+		try{
+			BufferedWriter fileOut = new BufferedWriter(new FileWriter(outputFile)); // Open the file containing the algorithm comparison results.
+
+			// Print the cluster information.
+			fileOut.write("k = " + this.k); fileOut.newLine();
+			fileOut.write("Distance = " + this.calc.getClass().getField("name")); fileOut.newLine();
+			
+			
+			fileOut.close();
+		}
+		catch(Exception e){
+			System.err.print("Error writing to the output file.");
+			System.exit(1);
+		}
+	}
 	
 }

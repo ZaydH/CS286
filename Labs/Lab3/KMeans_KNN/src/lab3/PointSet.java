@@ -8,15 +8,19 @@ import java.util.Scanner;
 public class PointSet {
 
 	SimplePoint[] points;
+	
+	
+	private PointSet(SimplePoint[] points){ this.points = points; }
 
 	/**
 	 * Used to parse a text file for use with KMeans
 	 * 
 	 * @param filePath - Path to a text file containing the list of points.
 	 */
-	public void readPointsFile(File filePath){
+	public static PointSet readPointsFile(File filePath){
 		
 		ArrayList<SimplePoint> pointList = new ArrayList<SimplePoint>();
+
 		
 		// Read the file via Scanner.
         try{
@@ -38,8 +42,9 @@ public class PointSet {
         Collections.shuffle(pointList);
         
 		// Convert the points ArrayList to an array of points and return it.
-		this.points = new SimplePoint[pointList.size()];
-		this.points = pointList.toArray(this.points);
+        SimplePoint[] points = new SimplePoint[pointList.size()];
+        return new PointSet(pointList.toArray(points));
+        
 		
 	}
 	
@@ -50,13 +55,13 @@ public class PointSet {
 	 * 
 	 * @return			A SimplePoint at the specified index.
 	 */
-	public SimplePoint getPoint(int index){ return this.points[index]; }
+	public SimplePoint get(int index){ return this.points[index]; }
 	
-
+	public SimplePoint[] getPoints(){ return this.points; }
 
 
 	
-	public class SimplePoint{
+	public static class SimplePoint{
 		
 		private double[] data;
 		
@@ -111,6 +116,8 @@ public class PointSet {
 	 * @author Zayd
 	 */
 	public static class EuclideanDistance implements DistanceMetric {
+	
+		public static final String name = "euclidean";
 		
 		public double dist(SimplePoint p1, SimplePoint p2){
 			
@@ -141,6 +148,8 @@ public class PointSet {
 	 */
 	public static class CosineDistance implements DistanceMetric {
 		
+		public static final String name = "cosine";		
+		
 		public double dist(SimplePoint p1, SimplePoint p2){
 			
 			// Extract the data from the two points
@@ -169,7 +178,7 @@ public class PointSet {
 	
 	
 	
-	public class Centroid {
+	public static class Centroid {
 		ArrayList<SimplePoint> points = new ArrayList<SimplePoint>();
 		double[] centroid;
 		SimplePoint centroidPoint;

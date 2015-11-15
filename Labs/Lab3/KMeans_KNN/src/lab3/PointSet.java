@@ -17,7 +17,7 @@ public class PointSet {
 	 * 
 	 * @param filePath - Path to a text file containing the list of points.
 	 */
-	public static PointSet readPointsFile(File filePath){
+	public static PointSet readPointsFile(File filePath, boolean hasClass){
 		
 		ArrayList<SimplePoint> pointList = new ArrayList<SimplePoint>();
 
@@ -29,7 +29,7 @@ public class PointSet {
             // Build the list of points
             while (input.hasNextLine()) {
                 String line = input.nextLine();
-                pointList.add( new SimplePoint(line, pointList.size(), false) );
+                pointList.add( new SimplePoint(line, pointList.size(), hasClass) );
             }
             input.close();
 
@@ -111,7 +111,7 @@ public class PointSet {
 		}
 		
 
-		public void setClassNumber(String classValue){ this.classValue = classValue; }
+		public void setClassValue(String classValue){ this.classValue = classValue; }
 		public String getClassValue(){ return this.classValue; }
 			
 		/**

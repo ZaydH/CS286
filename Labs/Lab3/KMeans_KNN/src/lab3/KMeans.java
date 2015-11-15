@@ -39,6 +39,8 @@ public class KMeans {
 		// Perform the clustering.
 		kmeans.performClustering();
 	
+		// Exit cleanly.
+		System.exit(0);
 	}
 	
 	
@@ -90,7 +92,7 @@ public class KMeans {
 		/*************************************************************************/
 		
 		// Build the point set.
-		allPoints = PointSet.readPointsFile(inputFile);
+		allPoints = PointSet.readPointsFile(inputFile, false);
 		
 		// Initialize the centroids.
 		centroid = new PointSet.Centroid[this.k];
@@ -134,7 +136,7 @@ public class KMeans {
 				}
 			}
 			
-			point.setClassNumber(Integer.toString(closestCentroid + 1));
+			point.setClassValue(Integer.toString(closestCentroid + 1));
 			// Add the point to the closest centroid.
 			centroid[closestCentroid].addPoint(point);
 		}

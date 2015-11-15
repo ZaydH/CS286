@@ -3,8 +3,9 @@ package lab3;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Set;
 
 import lab3.PointSet.DistanceMetric;
 
@@ -35,7 +36,7 @@ public class KNN {
 		KNN knn = new KNN(args[0], args[1], args[2], args[3], args[4] );
 		
 		// Perform the clustering.
-		kmeans.performClustering();
+		knn.performClassification();
 	
 	}
 	
@@ -87,7 +88,8 @@ public class KNN {
 		/*************************************************************************/
 		
 		// Build the point set.
-		trainingSet = PointSet.readPointsFile(trainingSetFile);
+		trainingSet = PointSet.readPointsFile(trainingSetFile, true);
+		testSet = PointSet.readPointsFile(testSetFile, false);
 		
 
 	}
@@ -96,6 +98,73 @@ public class KNN {
 	
 	public void performClassification(){
 		
+		/**
+		 * Helper class used for KNN classification.
+		 */
+		class KNNTuple implements Comparable<KNNTuple>{
+			public String classValue;
+			public double distance;
+			
+			public KNNTuple(String classValue, double distance){
+				this.classValue = classValue;
+				this.distance = distance;
+			}
+			
+			public int compareTo(KNNTuple other){
+				if(this.distance < other.distance) 			return -1;
+				else if(this.distance == other.distance)	return 0;
+				else 										return 1;
+			}
+		}
+		
+		// Perform classification
+		PointSet.SimplePoint[] testPoints = testSet.getPoints();
+		PointSet.SimplePoint[] trainingPoints = trainingSet.getPoints();
+		for(int i = 0; i < testPoints.length; i++){
+			
+			// Create an array to store the KNN distances
+			KNNTuple[] knnDistances = new KNNTuple[trainingPoints.length];
+			
+			//Iterate through all of the training points.
+			for(int j = 0; j < trainingPoints.length; j++)
+				knnDistances[j] = new KNNTuple(trainingPoints[j].getClassValue(), calc.dist(testPoints[i], trainingPoints[j]));
+			
+			// Sort the knn points by ascending distance
+			Arrays.sort(knnDistances);
+			
+			// Add the K best elements to the hash table.
+			Hashtable<String, Integer> kBest = new Hashtable<String, Integer>();
+			for(int j = 0; j < this.k; j++){
+				String key = knnDistances[j].classValue;
+				Integer numbElements = kBest.get(key);
+				// If this key does not yet exist in the hashtable, add it.
+				if(numbElements == null) numbElements = 0;
+				// Increment the number of elements.
+				numbElements = numbElements.intValue() + 1;
+				
+				// Add the incremented element back to the hash table
+				kBest.put(key, numbElements);
+			}
+			
+			// Find the highest scoring key
+			Set<String> keys = kBest.keySet();
+			String bestKey = "XXXXXXX"; 
+			double highestVote = Double.MIN_VALUE;
+			for(String key : keys){
+				double keyVal = kBest.get(key);
+				if(keyVal > highestVote){
+					bestKey = key;
+					highestVote = keyVal;
+				}
+			}
+			
+			// Store the test point's key.
+			testPoints[i].setClassValue(bestKey);
+		}
+		
+		// Output the KNN Results.
+		this.outputResults();
+		
 	}
 	
 	
@@ -103,43 +172,15 @@ public class KNN {
 		try{
 			BufferedWriter fileOut = new BufferedWriter(new FileWriter(outputFile)); // Open the file containing the algorithm comparison results.
 
-			// Print the cluster information.
-			fileOut.write("k = " + this.k); fileOut.newLine();
-			Class<? extends DistanceMetric> calcClass = this.calc.getClass();
-			Field calcNameField = calcClass.getField("NAME");
-			fileOut.write("DistanceMetric = " + calcNameField.get(null)); fileOut.newLine();
-			
-			// Calculate mean intercluster distance
-			double totalIntraclusterDistance = 0;
-			double numbElements = 0;
-			for(int i = 0; i < this.k; i++){
-				double[] distances = centroid[i].calculateIntraclusterDistance(this.calc);
-				
-				// Sum the intracluster distances
-				for(int j = 0; j < distances.length; j++ )
-					totalIntraclusterDistance += distances[j];
-				// Determine the number of elements for intracluster distance.
-				numbElements += distances.length;
-			}
-			fileOut.write("IntraclusterDistance = " + totalIntraclusterDistance/ numbElements); fileOut.newLine();
-
-			
-			// Calculate mean intercluster distance
-			double totalInterclusterDistance = 0;
-			for(int i = 0; i < this.k; i++)
-				for(int j = i + 1; j < this.k; j++)
-					totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
-			double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
-			fileOut.write("InterclusterDistance = " + meanIntraclusterDifference); fileOut.newLine();
-			
-			// Sort the collection by ID number
-			PointSet.SimplePoint[] pointsArr = this.allPoints.getPoints();
+			PointSet.SimplePoint[] pointsArr = this.testSet.getPoints();
 			Arrays.sort(pointsArr);
 			// Print the point information to a file.
-			for(PointSet.SimplePoint point: pointsArr){
-				fileOut.write( point.toString() ); fileOut.newLine();
+			for(int i = 0; i < pointsArr.length; i++){
+				fileOut.write( pointsArr[i].toString() );
+				// Use this to prevent a blank new line at the end.
+				if(i + 1 != pointsArr.length) 
+					fileOut.newLine();
 			}
-			
 			
 			fileOut.close();
 		}

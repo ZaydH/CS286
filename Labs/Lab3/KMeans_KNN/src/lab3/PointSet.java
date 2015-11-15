@@ -29,8 +29,7 @@ public class PointSet {
             // Build the list of points
             while (input.hasNextLine()) {
                 String line = input.nextLine();
-                String[] splitLine = line.split("\t");
-                pointList.add( new SimplePoint(splitLine) );
+                pointList.add( new SimplePoint(line, pointList.size()) );
             }
             input.close();
 
@@ -61,12 +60,18 @@ public class PointSet {
 
 
 	
-	public static class SimplePoint{
+	public static class SimplePoint implements Comparable<SimplePoint>{
+		
+		private static final String deliminator = "\t";
 		
 		private double[] data;
+		private String dataLine;
+		private int id;
+		private int classNumb = -1; // Can be used to represent the cluster number or class number.
 		
-		public SimplePoint(double[] data){
+		public SimplePoint(double[] data, int id){
 			this.data = data;
+			this.id = id;
 		}
 		
 		/**
@@ -75,7 +80,10 @@ public class PointSet {
 		 * 
 		 * @param data
 		 */
-		public SimplePoint(String[] data){
+		public SimplePoint(String dataLine, int id){
+			
+			this.dataLine = dataLine;
+			String[] data = dataLine.split(deliminator);
 			this.data = new double[data.length];
 			
 			for(int i = 0; i < data.length; i++){
@@ -86,7 +94,13 @@ public class PointSet {
 					System.exit(1);
 				}
 			}
+			
+			this.id = id;
 		}
+		
+
+		public void setClassNumber(int classNumb){ this.classNumb = classNumb; }
+		public int getClassNumber(){ return this.classNumb; }
 			
 		/**
 		 * Used to extract the data for a given point.
@@ -95,6 +109,23 @@ public class PointSet {
 		 */
 		public double[] getData(){ return data.clone(); }
 		
+		/**
+		 * Sorts SimplePoints according to their ID number
+		 * @param other		A simple
+		 * @return
+		 */
+		@Override
+		public int compareTo(SimplePoint other){
+			if(this.id < other.id) 			return -1;
+			else if(this.id == other.id) 	return 0;
+			else							return 1;
+		}
+		
+		
+		
+		public String toString(){
+			return dataLine + deliminator + classNumb;
+		}
 	}
 	
 	/**
@@ -172,7 +203,7 @@ public class PointSet {
 			double distance = dot / (Math.sqrt(p1Card) * Math.sqrt(p2Card));
 			
 			// Take the square root and return.
-			return Math.sqrt(distance);
+			return distance;
 		}
 	}
 	
@@ -219,7 +250,7 @@ public class PointSet {
 				}
 			}
 			
-			centroidPoint = new SimplePoint(centroid);
+			centroidPoint = new SimplePoint(centroid, -1);
 		}
 		
 		/**

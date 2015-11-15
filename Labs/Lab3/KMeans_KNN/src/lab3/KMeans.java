@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
 
 import lab3.PointSet.DistanceMetric;
 
@@ -132,6 +134,7 @@ public class KMeans {
 				}
 			}
 			
+			point.setClassNumber(closestCentroid + 1);
 			// Add the point to the closest centroid.
 			centroid[closestCentroid].addPoint(point);
 		}
@@ -192,6 +195,15 @@ public class KMeans {
 					totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
 			double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
 			fileOut.write("InterclusterDistance = " + meanIntraclusterDifference); fileOut.newLine();
+			
+			// Sort the collection by ID number
+			PointSet.SimplePoint[] pointsArr = this.allPoints.getPoints();
+			Arrays.sort(pointsArr);
+			// Print the point information to a file.
+			for(PointSet.SimplePoint point: pointsArr){
+				fileOut.write( point.toString() ); fileOut.newLine();
+			}
+			
 			
 			fileOut.close();
 		}

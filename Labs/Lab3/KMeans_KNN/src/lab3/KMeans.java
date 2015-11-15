@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
 
 import lab3.PointSet.DistanceMetric;
 

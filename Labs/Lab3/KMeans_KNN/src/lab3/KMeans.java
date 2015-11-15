@@ -3,6 +3,7 @@ package lab3;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 
 import lab3.PointSet.DistanceMetric;
 
@@ -35,8 +36,7 @@ public class KMeans {
 		
 		// Perform the clustering.
 		kmeans.performClustering();
-		
-
+	
 	}
 	
 	
@@ -62,9 +62,9 @@ public class KMeans {
 			System.exit(1);
 		}
 		// Verify and parse the distance metric
-		if(distanceMetric.equals(PointSet.CosineDistance.name))
+		if(distanceMetric.equals(PointSet.CosineDistance.NAME))
 			this.calc = new PointSet.CosineDistance();
-		else if(distanceMetric.equals(PointSet.EuclideanDistance.name))
+		else if(distanceMetric.equals(PointSet.EuclideanDistance.NAME))
 			this.calc = new PointSet.EuclideanDistance();
 		else{
 			System.err.println("Invalid value for the distance metric."); 
@@ -103,7 +103,8 @@ public class KMeans {
 		for(int i = 0; i < maxIterations; i++)
 			this.iteration();
 		
-		
+		// Output the clustering results.
+		this.outputResults();
 	}
 	
 	
@@ -112,6 +113,10 @@ public class KMeans {
 		
 		// Get all the points in the point set
 		PointSet.SimplePoint[] pointArr = allPoints.getPoints();
+		
+		// Before starting the next iteration, clear the points in the centroid.
+		for(PointSet.Centroid tempCentroid : centroid)
+			tempCentroid.clearPoints();
 		
 		// Iterate through all of the points and determine the distance from the point to each centroid.
 		for(PointSet.SimplePoint point : pointArr){
@@ -146,10 +151,9 @@ public class KMeans {
 		}
 		
 		// Update the centroids
-		for(PointSet.Centroid tempCentroid : centroid){
+		for(PointSet.Centroid tempCentroid : centroid)
 			tempCentroid.updateCentroid();
-			tempCentroid.clearPoints();
-		}
+		
 	}
 	
 	
@@ -162,8 +166,31 @@ public class KMeans {
 
 			// Print the cluster information.
 			fileOut.write("k = " + this.k); fileOut.newLine();
-			fileOut.write("Distance = " + this.calc.getClass().getField("name")); fileOut.newLine();
+			Class calcClass = this.calc.getClass();
+			Field calcNameField = calcClass.getField("NAME");
+			fileOut.write("DistanceMetric = " + calcNameField.get(null)); fileOut.newLine();
 			
+			// Calculate mean intercluster distance
+			double totalIntraclusterDistance = 0;
+			double numbElements = 0;
+			for(int i = 0; i < this.k; i++){
+				double[] distances = centroid[i].calculateIntraclusterDistance(this.calc);
+				
+				// Sum the intracluster distances
+				for(int j = 0; j < distances.length; j++ )
+					totalIntraclusterDistance += distances[j];
+				// Determine the number of elements for intracluster distance.
+				numbElements += distances.length;
+			}
+			fileOut.write("IntraclusterDistance = " + totalIntraclusterDistance/ numbElements); fileOut.newLine();
+
+			
+			// Calculate mean intercluster distance
+			double totalInterclusterDistance = 0;
+			for(int i = 0; i < this.k; i++)
+				for(int j = i + 1; j < this.k; j++)
+					totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
+			fileOut.write("InterclusterDistance = " + totalInterclusterDistance/ ( (this.k * (this.k -1 )) / 2 )); fileOut.newLine();
 			
 			fileOut.close();
 		}

@@ -117,7 +117,7 @@ public class PointSet {
 	 */
 	public static class EuclideanDistance implements DistanceMetric {
 	
-		public static final String name = "euclidean";
+		public static final String NAME = "euclidean";
 		
 		public double dist(SimplePoint p1, SimplePoint p2){
 			
@@ -148,7 +148,7 @@ public class PointSet {
 	 */
 	public static class CosineDistance implements DistanceMetric {
 		
-		public static final String name = "cosine";		
+		public static final String NAME = "cosine";		
 		
 		public double dist(SimplePoint p1, SimplePoint p2){
 			
@@ -190,7 +190,6 @@ public class PointSet {
 		public Centroid(SimplePoint initialCentroid){
 			points.add(initialCentroid);
 			this.updateCentroid();
-			this.clearPoints();
 		}
 		
 		
@@ -216,7 +215,7 @@ public class PointSet {
 			for(int i = 0; i < points.size(); i++){
 				double[] data = points.get(i).getData();
 				for(int d = 0; d < numbDimensions; d++){
-					centroid[d] += data[d] / numbDimensions;
+					centroid[d] += data[d] / points.size();
 				}
 			}
 			
@@ -269,6 +268,23 @@ public class PointSet {
 		 * @return Number of points assigned to this centroid.
 		 */
 		public int getNumbPoints(){ return points.size();}
+		
+		
+		/**
+		 * 
+		 * @param calc	DistanceMetric object for calculating distance.
+		 * @return		Array of the distances.
+		 */
+		public double[] calculateIntraclusterDistance(DistanceMetric calc){
+			
+			double[] distances = new double[ (points.size() * (points.size() -1 ) ) /2 ];
+			int cnt = 0;
+			for(int i = 0; i < points.size(); i++)
+				for(int j = i + 1; j < points.size(); j++)
+					distances[cnt++] += calc.dist(points.get(i), points.get(j));
+			
+			return distances;
+		}
 		
 		
 	}

@@ -3,6 +3,7 @@ package lab3;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class KNN {
 	private File outputFile;
 	
 	int k = -1;				// Number of Nearest Neighbors
+	double holdoutPercentage;
 	
 	public static void main(String args[]){
 		
@@ -41,7 +43,7 @@ public class KNN {
 	}
 	
 	
-	public KNN(String k, String testSetFilePath, String distanceMetric, String trainingSetFilePath, String outputFilePath){
+	public KNN(String k, String holdoutPercentage, String distanceMetric, String trainingSetFilePath, String outputFilePath){
 		
 		
 		/*************************************************************************/
@@ -55,10 +57,11 @@ public class KNN {
 			System.err.println("Invalid value of k."); 
 			System.exit(1);
 		}
-		// Get the input file and verify it exists.
-		File testSetFile = new File(testSetFilePath);
-		if(!testSetFile.exists() || testSetFile.isDirectory()){
-			System.err.println("Invalid test set file path."); 
+		// Verify that the holdout percentage is valid
+		try{ this.holdoutPercentage = Double.parseDouble(holdoutPercentage); }
+		catch(Exception e){ System.err.println("Invalid value of holdout percentage."); System.exit(1);}
+		if( this.holdoutPercentage <= 0 || this.holdoutPercentage >= 1 ){
+			System.err.println("Invalid value of holdout percentage."); 
 			System.exit(1);
 		}
 		// Verify and parse the distance metric
@@ -89,7 +92,6 @@ public class KNN {
 		
 		// Build the point set.
 		trainingSet = PointSet.readPointsFile(trainingSetFile, true);
-		testSet = PointSet.readPointsFile(testSetFile, false);
 		
 
 	}
@@ -127,7 +129,7 @@ public class KNN {
 			
 			//Iterate through all of the training points.
 			for(int j = 0; j < trainingPoints.length; j++)
-				knnDistances[j] = new KNNTuple(trainingPoints[j].getClassValue(), calc.dist(testPoints[i], trainingPoints[j]));
+				knnDistances[j] = new KNNTuple(trainingPoints[j].getActualClassValue(), calc.dist(testPoints[i], trainingPoints[j]));
 			
 			// Sort the knn points by ascending distance
 			Arrays.sort(knnDistances);
@@ -159,7 +161,7 @@ public class KNN {
 			}
 			
 			// Store the test point's key.
-			testPoints[i].setClassValue(bestKey);
+			testPoints[i].setPredictedClassValue(bestKey);
 		}
 		
 		// Output the KNN Results.
@@ -172,7 +174,15 @@ public class KNN {
 		try{
 			BufferedWriter fileOut = new BufferedWriter(new FileWriter(outputFile)); // Open the file containing the algorithm comparison results.
 
-			PointSet.SimplePoint[] pointsArr = this.testSet.getPoints();
+			// Print the two header lines.
+			fileOut.write( "k = " + this.k );fileOut.newLine();
+			Class<? extends DistanceMetric> calcClass = this.calc.getClass();
+			Field calcNameField = calcClass.getField("NAME");
+			fileOut.write("distance = " + calcNameField.get(null)); fileOut.newLine();
+			
+			for()
+			
+			/*PointSet.SimplePoint[] pointsArr = this.testSet.getPoints();
 			Arrays.sort(pointsArr);
 			// Print the point information to a file.
 			for(int i = 0; i < pointsArr.length; i++){
@@ -180,7 +190,7 @@ public class KNN {
 				// Use this to prevent a blank new line at the end.
 				if(i + 1 != pointsArr.length) 
 					fileOut.newLine();
-			}
+			}*/
 			
 			fileOut.close();
 		}

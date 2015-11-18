@@ -4,18 +4,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.Hashtable;
 
 import lab3.PointSet.DistanceMetric;
 
 public class KMeans {
 
-	private static final int INPUT_ARGUMENT_COUNT = 5;
+	private static final int INPUT_ARGUMENT_COUNT = 7;
 	
 	private PointSet allPoints;
 	private PointSet.Centroid[] centroid;
 	private DistanceMetric calc;
 	private File outputFile;
+	private double delta = -1;
+	private double threshold = -1;
 	
 	int k = -1;				// Number of Centroids
 	int maxIterations = -1;	// Maximum number of iterations for KMeans
@@ -33,7 +35,7 @@ public class KMeans {
 		}
 		
 		// Build the dataset
-		KMeans kmeans = new KMeans(args[0], args[1], args[2], args[3], args[4] );
+		KMeans kmeans = new KMeans(args[0], args[1], args[2], args[3], args[4], args[5], args[6] );
 		
 		// Perform the clustering.
 		kmeans.performClustering();
@@ -43,7 +45,8 @@ public class KMeans {
 	}
 	
 	
-	public KMeans(String k, String maxIterations, String distanceMetric, String inputFilePath, String outputFilePath){
+	public KMeans(String k, String maxIterations, String threshold, String delta, 
+				  String distanceMetric, String inputFilePath, String outputFilePath){
 		
 		
 		/*************************************************************************/
@@ -62,6 +65,20 @@ public class KMeans {
 		catch(Exception e){ System.err.println("Invalid value for the maximum number of iterations."); System.exit(1);}
 		if( this.maxIterations <= 0 ){
 			System.err.println("Invalid value for the maximum number of iterations."); 
+			System.exit(1);
+		}
+		// Verify that threshold is valid
+		try{ this.threshold = Double.parseDouble(threshold);	}
+		catch(Exception e){ System.err.println("Invalid value for threshold."); System.exit(1);}
+		if( this.threshold <= 0 || this.threshold >= 1 ){
+			System.err.println("Invalid value for threshold."); 
+			System.exit(1);
+		}
+		// Verify that delta is valid
+		try{ this.delta = Double.parseDouble(delta);	}
+		catch(Exception e){ System.err.println("Invalid value for delta."); System.exit(1);}
+		if( this.delta <= 0 ){
+			System.err.println("Invalid value for delta."); 
 			System.exit(1);
 		}
 		// Verify and parse the distance metric
@@ -103,11 +120,37 @@ public class KMeans {
 	public void performClustering(){
 		
 		// Go through the maximum number of iterations.
-		for(int i = 0; i < maxIterations; i++)
+		int i = 0;
+		double maxChange;
+		double avgClusterAccuracy;
+		do{
+			
+			// Store the previous centroid locations
+			PointSet.SimplePoint prevCentroidCoordinate[] = new PointSet.SimplePoint[k];
+			for(int j = 0; j < k; j++)
+				prevCentroidCoordinate[j] = centroid[j].getCoordinates();
+			
 			this.iteration();
+			
+			// Calculate the delta change
+			maxChange = Double.MIN_VALUE;
+			for(int j = 0; j < k; j++)
+				maxChange = Math.max(maxChange, calc.dist( prevCentroidCoordinate[j], centroid[j].getCoordinates() ) );
+			
+			i++;
+			
+			// Calculate the average cluster accuracy.
+			double clusterAccuracy[] = calculateClusterAccuracy();
+			avgClusterAccuracy = 0;
+			for (int j = 0; j < clusterAccuracy.length; j++)
+				avgClusterAccuracy += clusterAccuracy[j];
+			avgClusterAccuracy /= clusterAccuracy.length;
+			
+		} while(i < maxIterations && maxChange > this.delta && avgClusterAccuracy > threshold);
 		
 		// Output the clustering results.
 		this.outputResults();
+		
 	}
 	
 	
@@ -135,12 +178,12 @@ public class KMeans {
 				}
 			}
 			
-			point.setClassValue(Integer.toString(closestCentroid + 1));
+			point.setPredictedClassValue(Integer.toString(closestCentroid + 1));
 			// Add the point to the closest centroid.
 			centroid[closestCentroid].addPoint(point);
 		}
 		
-		// Verify that all centroids have at least 1 point.
+		/*// Verify that all centroids have at least 1 point.
 		for(int i = 0; i < this.k; i++){
 			if(centroid[i].getNumbPoints() > 0) continue;
 			
@@ -152,7 +195,7 @@ public class KMeans {
 				// Take a point from this centroid.
 				centroid[i].addPoint(centroid[j].popPoint());
 			}
-		}
+		}*/
 		
 		// Update the centroids
 		for(PointSet.Centroid tempCentroid : centroid)
@@ -161,6 +204,52 @@ public class KMeans {
 	}
 	
 	
+	
+	public double[] calculateClusterAccuracy(){
+		
+		// Hashtable is used to track the class distribution.
+		Hashtable<String, int[]> classDistribution = new Hashtable<String, int[]>();
+		
+		// Go through all the clusters and determine
+		for(int i = 0; i < k; i++){
+			
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public double calculateMeanInterclusterDistance(){
+		
+		// Calculate mean intercluster distance
+		double totalInterclusterDistance = 0;
+		for(int i = 0; i < this.k; i++)
+			for(int j = i + 1; j < this.k; j++)
+				totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
+		double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
+
+		return meanIntraclusterDifference;
+	}
+	
+	
+	public double calculateMeanIntraclusterDistance(){
+		
+		// Calculate mean intercluster distance
+		double totalIntraclusterDistance = 0;
+		double numbElements = 0;
+		for(int i = 0; i < this.k; i++){
+			double[] distances = centroid[i].calculateIntraclusterDistance(this.calc);
+			
+			// Sum the intracluster distances
+			for(int j = 0; j < distances.length; j++ )
+				totalIntraclusterDistance += distances[j];
+			// Determine the number of elements for intracluster distance.
+			numbElements += distances.length;
+		}
+		
+		return totalIntraclusterDistance / numbElements;
+	}
 	
 	
 	public void outputResults(){
@@ -172,32 +261,39 @@ public class KMeans {
 			fileOut.write("k = " + this.k); fileOut.newLine();
 			Class<? extends DistanceMetric> calcClass = this.calc.getClass();
 			Field calcNameField = calcClass.getField("NAME");
-			fileOut.write("DistanceMetric = " + calcNameField.get(null)); fileOut.newLine();
+			fileOut.write("distance = " + calcNameField.get(null));
 			
-			// Calculate mean intercluster distance
-			double totalIntraclusterDistance = 0;
-			double numbElements = 0;
+			// Print the centroid information.
 			for(int i = 0; i < this.k; i++){
-				double[] distances = centroid[i].calculateIntraclusterDistance(this.calc);
+				fileOut.write("centroid " + i + " = [");
 				
-				// Sum the intracluster distances
-				for(int j = 0; j < distances.length; j++ )
-					totalIntraclusterDistance += distances[j];
-				// Determine the number of elements for intracluster distance.
-				numbElements += distances.length;
+				PointSet.SimplePoint centroidPoint = centroid[i].getCoordinates();
+				
+				// Print the centroid point for each dimension
+				for(int j = 0; j < centroidPoint.getData().length; j++){
+					// Add a comma separator between the points
+					if(j != 0) fileOut.write(", ");
+					fileOut.write(Double.toString(centroidPoint.getData()[j]));
+				}
+				
+				fileOut.newLine();
+				fileOut.write("]");
 			}
-			fileOut.write("IntraclusterDistance = " + totalIntraclusterDistance/ numbElements); fileOut.newLine();
-
 			
-			// Calculate mean intercluster distance
-			double totalInterclusterDistance = 0;
-			for(int i = 0; i < this.k; i++)
-				for(int j = i + 1; j < this.k; j++)
-					totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
-			double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
-			fileOut.write("InterclusterDistance = " + meanIntraclusterDifference); fileOut.newLine();
+			// Datalog teh calculated intra- and inter-cluster distances
+			fileOut.newLine();
+			fileOut.write("mean intercluster distance = " + calculateMeanInterclusterDistance() );
+			fileOut.newLine();
+			fileOut.write("mean intracluster distance = " + calculateMeanIntraclusterDistance() ); 
 			
-			// Sort the collection by ID number
+			// Print the cluster accuracy.
+			double[] clusterAccuracy = calculateClusterAccuracy();
+			for(int i = 0; i < clusterAccuracy.length; i++){
+				fileOut.newLine();
+				fileOut.write("percentage of species " +  (i + 1)  + " in same cluster= " + clusterAccuracy[i] );
+			}
+			
+			/*// Sort the collection by ID number
 			PointSet.SimplePoint[] pointsArr = this.allPoints.getPoints();
 			Arrays.sort(pointsArr);
 			// Print the point information to a file.
@@ -206,7 +302,7 @@ public class KMeans {
 				// Use this to prevent a blank new line at the end.
 				if(i + 1 != pointsArr.length) 
 					fileOut.newLine();
-			}
+			}*/
 			
 			
 			fileOut.close();

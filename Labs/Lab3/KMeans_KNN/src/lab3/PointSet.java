@@ -2,6 +2,7 @@ package lab3;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -47,8 +48,8 @@ public class PointSet {
             ex.printStackTrace();
         }
 		
-        // Shuffle the points list.
-        Collections.shuffle(pointList);
+        //// Shuffle the points list.
+        //Collections.shuffle(pointList);
         
 		// Convert the points ArrayList to an array of points and return it.
         SimplePoint[] points = new SimplePoint[pointList.size()];
@@ -93,15 +94,12 @@ public class PointSet {
 		 */
 		public SimplePoint(String dataLine, int id ){
 			
-			String[] data = dataLine.split(deliminator);
-			// Handle the case of a class value
-			int length;
-			length = data.length - 1;
-			this.data = new double[data.length];
+			String[] dataSplit = dataLine.split(deliminator);
+			this.data = new double[dataSplit.length - 1]; // Last item is the class value.
 			
-			for(int i = 0; i < length; i++){
+			for(int i = 0; i < this.data.length; i++){
 				try{
-					this.data[i] = Double.parseDouble(data[i]);
+					this.data[i] = Double.parseDouble(dataSplit[i]);
 				}catch(Exception e){
 					System.err.println("Invalid file entry.  Not a double.");
 					System.exit(1);
@@ -111,7 +109,7 @@ public class PointSet {
 			this.id = id;
 			
 			// Store the class value if applicable.
-			actualClassValue = data[length];
+			actualClassValue = dataSplit[dataSplit.length - 1];
 		}
 		
 
@@ -151,16 +149,42 @@ public class PointSet {
 	
 	public PointSet performHoldout(double holdoutPercentage){
 		
-		PointSet holdoutSet;
+		int POINTS_PER_CLASS = 50;
 		
-		assert(false);//This method is not yet supported.
+		// Get the set of original points
+		ArrayList<PointSet.SimplePoint> originalPoints = new ArrayList<PointSet.SimplePoint>(Arrays.asList(this.points));
+		// Initialize the set of points to be transferred out
+		ArrayList<PointSet.SimplePoint> holdoutPoints = new ArrayList<PointSet.SimplePoint>();
 		
-		return null;
+		// Delete Points from the back
+		for(int i = 3; i > 0; i--){
+			// Select the holdout points from the back.
+			for(int j = 1; j <= holdoutPercentage * POINTS_PER_CLASS; j++ ){
+				PointSet.SimplePoint tempPoint = originalPoints.remove(POINTS_PER_CLASS * i - j);
+				holdoutPoints.add(tempPoint);
+			}
+		}
+		// Resize the points array
+		this.points = new SimplePoint[originalPoints.size()];
+		for(int i = 0; i < points.length; i++)
+			this.points[i] = originalPoints.get(i);
+		
+		// Build the array of holdout points.
+		SimplePoint[] holdoutPointArr = new SimplePoint[holdoutPoints.size()];
+		for(int i = 0; i < holdoutPointArr.length; i++)
+			holdoutPointArr[i] = holdoutPoints.get(i);
+		
+		// Return the held out points.
+		return new PointSet(holdoutPointArr);
 	}
 	
 	
 	
 	public String[] getAllActualClasses(){
+		
+		// Sort just so in the expected order.
+		Collections.sort(this.actualClassList);
+		
 		String[] outArr = new String[this.actualClassList.size()];
 		actualClassList.toArray(outArr);
 		return outArr;
@@ -301,15 +325,15 @@ public class PointSet {
 			centroidPoint = new SimplePoint(centroidCoordinates, -1);
 		}
 		
-		/**
-		 * Pops and returns a random point from this centroid.
-		 * 
-		 * @return A random point from the centroid.
-		 */
-		public SimplePoint popPoint(){
-			Collections.shuffle(points);
-			return points.remove(0); 
-		}
+//		/**
+//		 * Pops and returns a random point from this centroid.
+//		 * 
+//		 * @return A random point from the centroid.
+//		 */
+//		public SimplePoint popPoint(){
+//			Collections.shuffle(points);
+//			return points.remove(0); 
+//		}
 
 		
 		/**

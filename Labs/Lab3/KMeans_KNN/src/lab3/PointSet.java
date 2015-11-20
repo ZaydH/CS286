@@ -2,15 +2,26 @@ package lab3;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class PointSet {
 
 	SimplePoint[] points;
+	private ArrayList<String> actualClassList = new ArrayList<String>();
 	
 	
-	private PointSet(SimplePoint[] points){ this.points = points; }
+	private PointSet(SimplePoint[] points){ 
+		this.points = points; 
+	
+        // Go through all the points and build the list of all actual classes
+        for(int i = 0; i < points.length; i++)
+			// Keep a list of all class values.
+			if(!actualClassList.contains(points[i].getActualClassValue()))
+				actualClassList.add(points[i].getActualClassValue());
+	}
+
 
 	/**
 	 * Used to parse a text file for use with KMeans
@@ -29,7 +40,7 @@ public class PointSet {
             // Build the list of points
             while (input.hasNextLine()) {
                 String line = input.nextLine();
-                pointList.add( new SimplePoint(line, pointList.size(), hasClass) );
+                pointList.add( new SimplePoint(line, pointList.size()) );
             }
             input.close();
 
@@ -37,13 +48,13 @@ public class PointSet {
             ex.printStackTrace();
         }
 		
-        // Shuffle the points list.
-        Collections.shuffle(pointList);
+        //// Shuffle the points list.
+        //Collections.shuffle(pointList);
         
 		// Convert the points ArrayList to an array of points and return it.
         SimplePoint[] points = new SimplePoint[pointList.size()];
-        return new PointSet(pointList.toArray(points));
         
+        return new PointSet(pointList.toArray(points));
 		
 	}
 	
@@ -65,9 +76,10 @@ public class PointSet {
 		private static final String deliminator = "\t";
 		
 		private double[] data;
-		private String dataLine;
 		private int id;
-		private String classValue = "XXXXX"; // Can be used to represent the cluster number or class number.
+		private String actualClassValue = "XXXXX"; // Can be used to represent the cluster number or class number.
+		private String predictedClassValue = "XXXXX"; // Can be used to represent the cluster number or class number.
+
 		
 		public SimplePoint(double[] data, int id){
 			this.data = data;
@@ -80,21 +92,14 @@ public class PointSet {
 		 * 
 		 * @param data
 		 */
-		public SimplePoint(String dataLine, int id, boolean hasClass){
+		public SimplePoint(String dataLine, int id ){
 			
-			this.dataLine = dataLine;
-			String[] data = dataLine.split(deliminator);
-			// Handle the case of a class value
-			int length;
-			if(hasClass)
-				length = data.length - 1;
-			else
-				length = data.length;
-			this.data = new double[data.length];
+			String[] dataSplit = dataLine.split(deliminator);
+			this.data = new double[dataSplit.length - 1]; // Last item is the class value.
 			
-			for(int i = 0; i < length; i++){
+			for(int i = 0; i < this.data.length; i++){
 				try{
-					this.data[i] = Double.parseDouble(data[i]);
+					this.data[i] = Double.parseDouble(dataSplit[i]);
 				}catch(Exception e){
 					System.err.println("Invalid file entry.  Not a double.");
 					System.exit(1);
@@ -104,15 +109,13 @@ public class PointSet {
 			this.id = id;
 			
 			// Store the class value if applicable.
-			if(hasClass)
-				classValue = data[length];
-			else
-				classValue = "XXXXXX";
+			actualClassValue = dataSplit[dataSplit.length - 1];
 		}
 		
 
-		public void setClassValue(String classValue){ this.classValue = classValue; }
-		public String getClassValue(){ return this.classValue; }
+		public void setPredictedClassValue(String classValue){ this.predictedClassValue = classValue; }
+		public String getActualClassValue(){ return this.actualClassValue; }
+		public String getPredictedClassValue(){ return this.predictedClassValue; }
 			
 		/**
 		 * Used to extract the data for a given point.
@@ -135,20 +138,57 @@ public class PointSet {
 		
 		
 		
-		public String toString(){
+		/*public String toString(){
 			return dataLine + SimplePoint.deliminator + this.classValue;
-		}
+		}*/
 	}
 	
 	
 	
 	
 	
+	public PointSet performHoldout(double holdoutPercentage){
+		
+		int POINTS_PER_CLASS = 50;
+		
+		// Get the set of original points
+		ArrayList<PointSet.SimplePoint> originalPoints = new ArrayList<PointSet.SimplePoint>(Arrays.asList(this.points));
+		// Initialize the set of points to be transferred out
+		ArrayList<PointSet.SimplePoint> holdoutPoints = new ArrayList<PointSet.SimplePoint>();
+		
+		// Delete Points from the back
+		for(int i = 3; i > 0; i--){
+			// Select the holdout points from the back.
+			for(int j = 1; j <= holdoutPercentage * POINTS_PER_CLASS; j++ ){
+				PointSet.SimplePoint tempPoint = originalPoints.remove(POINTS_PER_CLASS * i - j);
+				holdoutPoints.add(tempPoint);
+			}
+		}
+		// Resize the points array
+		this.points = new SimplePoint[originalPoints.size()];
+		for(int i = 0; i < points.length; i++)
+			this.points[i] = originalPoints.get(i);
+		
+		// Build the array of holdout points.
+		SimplePoint[] holdoutPointArr = new SimplePoint[holdoutPoints.size()];
+		for(int i = 0; i < holdoutPointArr.length; i++)
+			holdoutPointArr[i] = holdoutPoints.get(i);
+		
+		// Return the held out points.
+		return new PointSet(holdoutPointArr);
+	}
 	
 	
 	
-	
-	
+	public String[] getAllActualClasses(){
+		
+		// Sort just so in the expected order.
+		Collections.sort(this.actualClassList);
+		
+		String[] outArr = new String[this.actualClassList.size()];
+		actualClassList.toArray(outArr);
+		return outArr;
+	}
 	
 	
 	
@@ -239,7 +279,7 @@ public class PointSet {
 	
 	public static class Centroid {
 		ArrayList<SimplePoint> points = new ArrayList<SimplePoint>();
-		double[] centroid;
+		double[] centroidCoordinates;
 		SimplePoint centroidPoint;
 		
 		/**
@@ -249,6 +289,7 @@ public class PointSet {
 		public Centroid(SimplePoint initialCentroid){
 			points.add(initialCentroid);
 			this.updateCentroid();
+			
 		}
 		
 		
@@ -265,31 +306,34 @@ public class PointSet {
 		 */
 		public void updateCentroid(){
 			
+			// If the centroid is empty, do nothing
+			if(points.size() == 0) return;
+			
 			int numbDimensions = points.get(0).getData().length;
 			
 			// Initialize the centroid array.
-			centroid = new double[numbDimensions];
+			centroidCoordinates = new double[numbDimensions];
 			
 			// Calculate the centroid.
 			for(int i = 0; i < points.size(); i++){
 				double[] data = points.get(i).getData();
 				for(int d = 0; d < numbDimensions; d++){
-					centroid[d] += data[d] / points.size();
+					centroidCoordinates[d] += data[d] / points.size();
 				}
 			}
 			
-			centroidPoint = new SimplePoint(centroid, -1);
+			centroidPoint = new SimplePoint(centroidCoordinates, -1);
 		}
 		
-		/**
-		 * Pops and returns a random point from this centroid.
-		 * 
-		 * @return A random point from the centroid.
-		 */
-		public SimplePoint popPoint(){
-			Collections.shuffle(points);
-			return points.remove(0); 
-		}
+//		/**
+//		 * Pops and returns a random point from this centroid.
+//		 * 
+//		 * @return A random point from the centroid.
+//		 */
+//		public SimplePoint popPoint(){
+//			Collections.shuffle(points);
+//			return points.remove(0); 
+//		}
 
 		
 		/**
@@ -343,6 +387,16 @@ public class PointSet {
 					distances[cnt++] += calc.dist(points.get(i), points.get(j));
 			
 			return distances;
+		}
+		
+		public PointSet.SimplePoint getCoordinates(){
+			double[] returnCoordinates = new double[centroidCoordinates.length];
+			
+			for(int i = 0; i < centroidCoordinates.length; i++ )
+				returnCoordinates[i] = centroidCoordinates[i];
+			
+			return new PointSet.SimplePoint(returnCoordinates, -1);
+			
 		}
 		
 		

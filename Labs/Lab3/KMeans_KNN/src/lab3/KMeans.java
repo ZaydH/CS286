@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
+import java.util.Random;
 
+import lab3.PointSet.Centroid;
 import lab3.PointSet.DistanceMetric;
 
 public class KMeans {
@@ -19,6 +21,7 @@ public class KMeans {
 	private DistanceMetric calc;
 	private File outputFile;
 	private double delta = -1;
+	private int numbDimensions = 4;
 	
 	int k = -1;				// Number of Centroids
 	int maxIterations = -1;	// Maximum number of iterations for KMeans
@@ -112,11 +115,70 @@ public class KMeans {
 		allPoints = PointSet.readPointsFile(inputFile, false);
 		
 		// Initialize the centroids.
-		centroid = new PointSet.Centroid[this.k];
-		for(int i = 0; i < this.k; i++)
-			centroid[i] = new PointSet.Centroid( allPoints.get(i) );
+		initializeCentroids();
 	}
 	
+	
+	
+	
+	private void initializeCentroids(){
+		
+		
+		
+		// Initialize the centroid data structure.
+		centroid = new PointSet.Centroid[this.k];
+		
+		// Initialize the centroid to random points.
+		if(this.centroidInit.equals("random")){
+			int numbPoints = allPoints.size();
+			Random rand = new Random();
+			
+			// Initialize the centroids to random points.
+			for(int i = 0; i < k; i++)
+				centroid[i] = new Centroid( allPoints.get(rand.nextInt(numbPoints)) );
+			return;
+			
+		}
+		// Initialize all centroids to zero.
+		else if(this.centroidInit.equals("zero")){
+			for(int i = 0; i < this.k; i++)
+				this.centroid[i] = PointSet.Centroid.createZeroCentroid(numbDimensions);
+			return;
+		}
+		else if(this.centroidInit.equals("partition")){
+			// Create the arrays to store the partition values.
+			double[] dimMin = new double[this.numbDimensions];
+			double[] dimMax = new double[this.numbDimensions];
+			for(int d = 0; d < this.numbDimensions; d++){
+				dimMin[d] = Double.MAX_VALUE;
+				dimMax[d] = Double.MIN_VALUE;
+			}
+			
+			// Go through all the points and determine the min and max
+			for(int p = 0; p < allPoints.size(); p++){
+				double[] pointLoc  = allPoints.get(p).getData();
+				for(int d = 0; d < this.numbDimensions; d++){
+					dimMin[d] = Math.min(dimMin[d], pointLoc[d]);
+					dimMax[d] = Math.max(dimMax[d], pointLoc[d]);
+				}
+			}
+			
+			// Go through the number centroids and define the centroids.
+			for(int i = 0; i < k; i++){
+				double[] centroidLoc = new double[this.numbDimensions];
+				for(int d = 0; d < this.numbDimensions; d++){
+					double partitionWidth = dimMax[d] - dimMin[d];
+					
+					centroidLoc[i] = dimMin[d] + partitionWidth * (i + 0.5);
+				}
+				centroid[i] = new PointSet.Centroid( new PointSet.SimplePoint(centroidLoc, -1) );
+			}
+				
+		}
+		// Invalid value of the centroid initialization
+		else
+			assert(false);
+	}
 	
 	public void performClustering(){
 		
@@ -217,10 +279,17 @@ public class KMeans {
 		
 		// Calculate mean intercluster distance
 		double totalInterclusterDistance = 0;
-		for(int i = 0; i < this.k; i++)
-			for(int j = i + 1; j < this.k; j++)
-				totalInterclusterDistance += centroid[i].calculateDistance(centroid[j], this.calc);
-		double meanIntraclusterDifference = totalInterclusterDistance/ ( this.k * (this.k -1 ) / 2 );
+		int numbElements = 0;
+		PointSet.SimplePoint outerCentroid, innerCentroid;
+		for(int i = 0; i < this.k; i++){
+			outerCentroid = this.centroid[i].getCoordinates();
+			for(int j = i + 1; j < this.k; j++){
+				innerCentroid = this.centroid[j].getCoordinates();
+				totalInterclusterDistance += this.calc.dist(outerCentroid, innerCentroid);
+			}
+		}
+		assert(numbElements == this.k * (this.k -1 ) / 2 );
+		double meanIntraclusterDifference = totalInterclusterDistance / ( this.k * (this.k -1 ) / 2 );
 
 		return meanIntraclusterDifference;
 	}
@@ -274,7 +343,7 @@ public class KMeans {
 				fileOut.write("]");
 			}
 			
-			// Datalog teh calculated intra- and inter-cluster distances
+			// Output the calculated intra- and inter-cluster distances
 			fileOut.newLine();
 			fileOut.write("mean intercluster distance = " + calculateMeanInterclusterDistance() );
 			fileOut.newLine();

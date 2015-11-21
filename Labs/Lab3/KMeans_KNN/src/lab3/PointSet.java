@@ -357,15 +357,15 @@ public class PointSet {
 		public double calculateDistance(SimplePoint p1, DistanceMetric calc){ return calc.dist(p1, centroidPoint); }
 		
 		
-		/**
-		 * Used to calculate the distance between two centroids.
-		 * 
-		 * @param other	Another centroid.
-		 * @param calc	Object of type distance metric.  Calculates distance between two SimplePoint objects.
-		 * 
-		 * @return 		Distance between the two centroids.
-		 */
-		public double calculateDistance(Centroid other, DistanceMetric calc){ return calc.dist(this.centroidPoint, other.centroidPoint); }
+//		/**
+//		 * Used to calculate the distance between two centroids.
+//		 * 
+//		 * @param other	Another centroid.
+//		 * @param calc	Object of type distance metric.  Calculates distance between two SimplePoint objects.
+//		 * 
+//		 * @return 		Distance between the two centroids.
+//		 */
+//		public double calculateDistance(Centroid other, DistanceMetric calc){ return calc.dist(this.centroidPoint, other.centroidPoint); }
 		
 		/**
 		 * Adds a point to the centroid.
@@ -419,6 +419,22 @@ public class PointSet {
 				clusterPoints[i] = this.points.get(i);
 			return clusterPoints;
 			
+		}
+		
+		/**
+		 * Creates a centroid located at the origin (i.e. all 
+		 * centroid dimensions are set to 0).
+		 * 
+		 * @param d Number of dimensions in the centroid
+		 * @return
+		 */
+		public static Centroid createZeroCentroid(int d){
+			
+			double[] zeroCentroid = new double[d];
+			for(int i = 0; i < d; i++)
+				zeroCentroid[i] = 0;
+			
+			return new Centroid(new SimplePoint(zeroCentroid, -1));
 		}
 		
 	}

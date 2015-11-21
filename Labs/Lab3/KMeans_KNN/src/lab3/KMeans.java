@@ -215,24 +215,26 @@ public class KMeans {
 		PointSet.SimplePoint[] pointArr = allPoints.getPoints();
 		
 		// Before starting the next iteration, clear the points in the centroid.
-		for(PointSet.Centroid tempCentroid : centroid)
-			tempCentroid.clearPoints();
+		for(int i = 0; i < this.centroid.length; i++)
+			centroid[i].clearPoints();
 		
 		// Iterate through all of the points and determine the distance from the point to each centroid.
-		for(PointSet.SimplePoint point : pointArr){
+		for(int p = 0; p < pointArr.length; p++){
+			PointSet.SimplePoint point = pointArr[p];
 			
 			// Determine the closest centroid.
-			double bestDistance = centroid[0].calculateDistance(point, this.calc);
-			int closestCentroid = 0;
-			for(int i = 1; i < this.k; i++){
-				double centroidDistance = centroid[i].calculateDistance(point, this.calc);
+			double bestDistance = Double.MAX_VALUE;
+			int closestCentroid = Integer.MAX_VALUE;
+			for(int centroidCnt = 0; centroidCnt < this.k; centroidCnt++){
+				PointSet.SimplePoint centroidCoord = centroid[centroidCnt].getCoordinates();
+				double centroidDistance = this.calc.dist(point, centroidCoord);
 				if(centroidDistance < bestDistance){
-					closestCentroid = i;
+					closestCentroid = centroidCnt;
 					bestDistance = centroidDistance;
 				}
 			}
 			
-			point.setPredictedClassValue(Integer.toString(closestCentroid + 1));
+			point.setPredictedClassValue(Integer.toString(closestCentroid));
 			// Add the point to the closest centroid.
 			centroid[closestCentroid].addPoint(point);
 		}
@@ -252,8 +254,8 @@ public class KMeans {
 		}*/
 		
 		// Update the centroids
-		for(PointSet.Centroid tempCentroid : centroid)
-			tempCentroid.updateCentroid();
+		for(int i = 0; i < this.centroid.length; i++)
+			centroid[i].updateCentroid();
 		
 	}
 	
@@ -326,18 +328,17 @@ public class KMeans {
 			
 			// Print the centroid information.
 			for(int i = 0; i < this.k; i++){
-				fileOut.write("centroid " + i + " = [");
 				
 				PointSet.SimplePoint centroidPoint = centroid[i].getCoordinates();
 				
+				fileOut.newLine();
+				fileOut.write("centroid " + i + " = [");
 				// Print the centroid point for each dimension
 				for(int j = 0; j < centroidPoint.getData().length; j++){
 					// Add a comma separator between the points
 					if(j != 0) fileOut.write(", ");
 					fileOut.write(Double.toString(centroidPoint.getData()[j]));
 				}
-				
-				fileOut.newLine();
 				fileOut.write("]");
 			}
 			

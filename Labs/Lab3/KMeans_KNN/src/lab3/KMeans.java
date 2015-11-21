@@ -13,11 +13,12 @@ public class KMeans {
 	private static final int INPUT_ARGUMENT_COUNT = 7;
 	
 	private PointSet allPoints;
+	
 	private PointSet.Centroid[] centroid;
+	private String centroidInit;
 	private DistanceMetric calc;
 	private File outputFile;
 	private double delta = -1;
-	private double threshold = -1;
 	
 	int k = -1;				// Number of Centroids
 	int maxIterations = -1;	// Maximum number of iterations for KMeans
@@ -45,8 +46,8 @@ public class KMeans {
 	}
 	
 	
-	public KMeans(String k, String maxIterations, String threshold, String delta, 
-				  String distanceMetric, String inputFilePath, String outputFilePath){
+	public KMeans(String k, String maxIterations, String delta, 
+				  String distanceMetric, String init, String inputFilePath, String outputFilePath){
 		
 		
 		/*************************************************************************/
@@ -67,13 +68,6 @@ public class KMeans {
 			System.err.println("Invalid value for the maximum number of iterations."); 
 			System.exit(1);
 		}
-		// Verify that threshold is valid
-		try{ this.threshold = Double.parseDouble(threshold);	}
-		catch(Exception e){ System.err.println("Invalid value for threshold."); System.exit(1);}
-		if( this.threshold <= 0 || this.threshold >= 1 ){
-			System.err.println("Invalid value for threshold."); 
-			System.exit(1);
-		}
 		// Verify that delta is valid
 		try{ this.delta = Double.parseDouble(delta);	}
 		catch(Exception e){ System.err.println("Invalid value for delta."); System.exit(1);}
@@ -88,6 +82,13 @@ public class KMeans {
 			this.calc = new PointSet.EuclideanDistance();
 		else{
 			System.err.println("Invalid value for the distance metric."); 
+			System.exit(1);
+		}
+		// Verify that the initialize of the centroids is valid.
+		this.centroidInit = init;
+		if(!this.centroidInit.equals("random") && !this.centroidInit.equals("zero")
+		   && !this.centroidInit.equals("partition") ){
+			System.err.println("Invalid centroid initialization value."); 
 			System.exit(1);
 		}
 		// Get the input file and verify it exists.
@@ -120,7 +121,7 @@ public class KMeans {
 	public void performClustering(){
 		
 		// Go through the maximum number of iterations.
-		int i = 0;
+		int itrCnt = 0;
 		double maxChange;
 		double avgClusterAccuracy;
 		do{
@@ -136,17 +137,9 @@ public class KMeans {
 			maxChange = Double.MIN_VALUE;
 			for(int j = 0; j < k; j++)
 				maxChange = Math.max(maxChange, calc.dist( prevCentroidCoordinate[j], centroid[j].getCoordinates() ) );
-			
-			i++;
-			
-			// Calculate the average cluster accuracy.
-			double clusterAccuracy[] = calculateClusterAccuracy();
-			avgClusterAccuracy = 0;
-			for (int j = 0; j < clusterAccuracy.length; j++)
-				avgClusterAccuracy += clusterAccuracy[j];
-			avgClusterAccuracy /= clusterAccuracy.length;
-			
-		} while(i < maxIterations && maxChange > this.delta && avgClusterAccuracy > threshold);
+			// Increment the iteration counter
+			itrCnt++;
+		} while(itrCnt < maxIterations && maxChange > this.delta);
 		
 		// Output the clustering results.
 		this.outputResults();
@@ -238,17 +231,18 @@ public class KMeans {
 		// Calculate mean intercluster distance
 		double totalIntraclusterDistance = 0;
 		double numbElements = 0;
-		for(int i = 0; i < this.k; i++){
-			double[] distances = centroid[i].calculateIntraclusterDistance(this.calc);
+		for(int clusterCnt = 0; clusterCnt < this.k; clusterCnt++){
+			
+			// Get the centroid's location.
+			PointSet.SimplePoint centroidPoint = centroid[clusterCnt].getCoordinates();
+			PointSet.SimplePoint[] clusterPoints = centroid[clusterCnt].getClusterPoints();
 			
 			// Sum the intracluster distances
-			for(int j = 0; j < distances.length; j++ )
-				totalIntraclusterDistance += distances[j];
-			// Determine the number of elements for intracluster distance.
-			numbElements += distances.length;
+			for(int j = 0; j < clusterPoints.length; j++ )
+				totalIntraclusterDistance += this.calc.dist(centroidPoint, clusterPoints[j]);
 		}
 		
-		return totalIntraclusterDistance / numbElements;
+		return totalIntraclusterDistance / this.allPoints.size() ;
 	}
 	
 	
@@ -290,7 +284,7 @@ public class KMeans {
 			double[] clusterAccuracy = calculateClusterAccuracy();
 			for(int i = 0; i < clusterAccuracy.length; i++){
 				fileOut.newLine();
-				fileOut.write("percentage of species " +  (i + 1)  + " in same cluster= " + clusterAccuracy[i] );
+				fileOut.write("measure of species " +  (i + 1)  + " in same cluster= " + clusterAccuracy[i] );
 			}
 			
 			/*// Sort the collection by ID number

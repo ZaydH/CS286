@@ -47,9 +47,6 @@ public class PointSet {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-		
-        //// Shuffle the points list.
-        //Collections.shuffle(pointList);
         
 		// Convert the points ArrayList to an array of points and return it.
         SimplePoint[] points = new SimplePoint[pointList.size()];
@@ -69,6 +66,13 @@ public class PointSet {
 	
 	public SimplePoint[] getPoints(){ return this.points; }
 
+	/**
+	 * Gets the number of elements in the point set.
+	 * 
+	 * @return Size of the point set.
+	 */
+	public int size(){ return this.points.length;}
+	
 
 	
 	public static class SimplePoint implements Comparable<SimplePoint>{
@@ -135,8 +139,6 @@ public class PointSet {
 			else if(this.id == other.id) 	return 0;
 			else							return 1;
 		}
-		
-		
 		
 		/*public String toString(){
 			return dataLine + SimplePoint.deliminator + this.classValue;
@@ -373,22 +375,27 @@ public class PointSet {
 		public int getNumbPoints(){ return points.size();}
 		
 		
-		/**
-		 * 
-		 * @param calc	DistanceMetric object for calculating distance.
-		 * @return		Array of the distances.
-		 */
-		public double[] calculateIntraclusterDistance(DistanceMetric calc){
-			
-			double[] distances = new double[ (points.size() * (points.size() -1 ) ) /2 ];
-			int cnt = 0;
-			for(int i = 0; i < points.size(); i++)
-				for(int j = i + 1; j < points.size(); j++)
-					distances[cnt++] += calc.dist(points.get(i), points.get(j));
-			
-			return distances;
-		}
+//		/**
+//		 * 
+//		 * @param calc	DistanceMetric object for calculating distance.
+//		 * @return		Array of the distances.
+//		 */
+//		public double[] clusterCnt(DistanceMetric calc){
+//			
+//			double[] distances = new double[ (points.size() * (points.size() -1 ) ) /2 ];
+//			int cnt = 0;
+//			for(int i = 0; i < points.size(); i++)
+//				for(int j = i + 1; j < points.size(); j++)
+//					distances[cnt++] += calc.dist(points.get(i), points.get(j));
+//			
+//			return distances;
+//		}
 		
+		/**
+		 * Gets the coordinates of the centroid as a d dimensional array.
+		 * 
+		 * @return Array of double representing the Centroid's value in d dimensions
+		 */
 		public PointSet.SimplePoint getCoordinates(){
 			double[] returnCoordinates = new double[centroidCoordinates.length];
 			
@@ -399,6 +406,20 @@ public class PointSet {
 			
 		}
 		
+		
+		/**
+		 * Gets the set of points assigned to this cluster.
+		 * 
+		 * @return Array of Cluster SimplePoint objects.
+		 */
+		public PointSet.SimplePoint[] getClusterPoints(){
+			SimplePoint[] clusterPoints = new SimplePoint[this.points.size()];
+			
+			for(int i = 0; i < this.points.size(); i++)
+				clusterPoints[i] = this.points.get(i);
+			return clusterPoints;
+			
+		}
 		
 	}
 

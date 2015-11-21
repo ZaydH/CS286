@@ -95,6 +95,12 @@ public class KNN {
 		// Build the point set.
 		trainingSet = PointSet.readPointsFile(trainingSetFile, true);
 		testSet = trainingSet.performHoldout(this.holdoutPercentage);
+		
+		// Verify that k is given the training set size.
+		if(this.k > trainingSet.size()){
+			System.err.println("k is larger than the size of the training set."); 
+			System.exit(1);
+		}
 
 	}
 	
@@ -217,8 +223,8 @@ public class KNN {
 				
 				// Print the class accuracy
 				fileOut.newLine();
-				//fileOut.write("accuracy for species " + (i+1) + " = " + (double)(correctClassifications)/numbPoints); 
-				fileOut.write("accuracy for species " + (i+1) + " = " + (double)(correctNeighbors)/numbNeighbors);
+				//fileOut.write("average accuracy for species " + (i+1) + " = " + (double)(correctClassifications)/numbPoints); 
+				fileOut.write("average accuracy for species " + (i+1) + " = " + (double)(correctNeighbors)/numbNeighbors);
 				
 			}
 				

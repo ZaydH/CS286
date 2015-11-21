@@ -19,14 +19,16 @@ cp KMeans_KNN/src/lab3/rebuild_KMeans.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rebuild.
 cp KMeans_KNN/src/lab3/rerun_KMeans.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rerun.sh
 cp KMeans_KNN/src/lab3/PointSet.java $SUBMISSION_DIR/$EXERCISE1_DIR/
 cp KMeans_KNN/src/lab3/KMeans.java $SUBMISSION_DIR/$EXERCISE1_DIR/
+cp KMeans_KNN/manifests/kmeans_manifest.txt $SUBMISSION_DIR/$EXERCISE1_DIR/MANIFEST.MF
 
 # Build Exercise #2
 echo "Copying the files for exercise #2"
 mkdir -p $SUBMISSION_DIR/$EXERCISE2_DIR
-cp KMeans_KNN/src/lab3/rebuild_KNN.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rebuild.sh
-cp KMeans_KNN/src/lab3/rerun_KNN.sh $SUBMISSION_DIR/$EXERCISE1_DIR/rerun.sh
-cp KMeans_KNN/src/lab3/PointSet.java $SUBMISSION_DIR/$EXERCISE1_DIR/
-cp KMeans_KNN/src/lab3/KNN.java $SUBMISSION_DIR/$EXERCISE1_DIR/
+cp KMeans_KNN/src/lab3/rebuild_KNN.sh $SUBMISSION_DIR/$EXERCISE2_DIR/rebuild.sh
+cp KMeans_KNN/src/lab3/rerun_KNN.sh $SUBMISSION_DIR/$EXERCISE2_DIR/rerun.sh
+cp KMeans_KNN/src/lab3/PointSet.java $SUBMISSION_DIR/$EXERCISE2_DIR/
+cp KMeans_KNN/src/lab3/KNN.java $SUBMISSION_DIR/$EXERCISE2_DIR/
+cp KMeans_KNN/manifests/knn_manifest.txt $SUBMISSION_DIR/$EXERCISE2_DIR/MANIFEST.MF
 
 # Build Exercise #3
 mkdir -p $SUBMISSION_DIR/$EXERCISE3_DIR

@@ -130,14 +130,15 @@ public class KNN {
 		// Perform classification
 		PointSet.SimplePoint[] testPoints = testSet.getPoints();
 		PointSet.SimplePoint[] trainingPoints = trainingSet.getPoints();
-		for(int i = 0; i < testPoints.length; i++){
+		for(int p = 0; p < testPoints.length; p++){
 			
 			// Create an array to store the KNN distances
 			KNNTuple[] knnDistances = new KNNTuple[trainingPoints.length];
+			PointSet.SimplePoint testPoint = testPoints[p];
 			
 			//Iterate through all of the training points.
 			for(int j = 0; j < trainingPoints.length; j++)
-				knnDistances[j] = new KNNTuple(trainingPoints[j].getActualClassValue(), calc.dist(testPoints[i], trainingPoints[j]));
+				knnDistances[j] = new KNNTuple(trainingPoints[j].getActualClassValue(), calc.dist(testPoint, trainingPoints[j]));
 			
 			// Sort the knn points by ascending distance
 			Arrays.sort(knnDistances);
@@ -157,7 +158,7 @@ public class KNN {
 				// Add the incremented element back to the hash table
 				kBest.put(key, numbElements);
 				
-				if(key.equals(testPoints[i].getActualClassValue()))
+				if(key.equals(testPoint.getActualClassValue()))
 					correctClassCount++;
 			}
 			
@@ -176,9 +177,9 @@ public class KNN {
 			}
 			
 			// Store the test point's key.
-			testPoints[i].setPredictedClassValue(bestKey);
+			testPoint.setPredictedClassValue(bestKey);
 			//Store the number of correct neighbors
-			accuracyTable.put(Integer.toString(testPoints[i].getID()), correctClassCount);
+			accuracyTable.put(Integer.toString(testPoint.getID()), correctClassCount);
 		}
 		
 		// Output the KNN Results.

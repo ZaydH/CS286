@@ -140,6 +140,9 @@ public class PointSet {
 			else							return 1;
 		}
 		
+		
+		public int getID(){ return id; }
+		
 		/*public String toString(){
 			return dataLine + SimplePoint.deliminator + this.classValue;
 		}*/

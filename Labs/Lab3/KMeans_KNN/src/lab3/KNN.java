@@ -19,6 +19,8 @@ public class KNN {
 	private DistanceMetric calc;
 	private File outputFile;
 	
+	private Hashtable<String, Integer> accuracyTable = new Hashtable<String, Integer>();
+	
 	int k = -1;				// Number of Nearest Neighbors
 	double holdoutPercentage;
 	
@@ -133,8 +135,10 @@ public class KNN {
 			
 			// Sort the knn points by ascending distance
 			Arrays.sort(knnDistances);
+	
 			
 			// Add the K best elements to the hash table.
+			int correctClassCount = 0;
 			Hashtable<String, Integer> kBest = new Hashtable<String, Integer>();
 			for(int j = 0; j < this.k; j++){
 				String key = knnDistances[j].classValue;
@@ -146,7 +150,12 @@ public class KNN {
 				
 				// Add the incremented element back to the hash table
 				kBest.put(key, numbElements);
+				
+				if(key.equals(testPoints[i].getActualClassValue()))
+					correctClassCount++;
 			}
+			
+			
 			
 			// Find the highest scoring key
 			Set<String> keys = kBest.keySet();
@@ -162,6 +171,8 @@ public class KNN {
 			
 			// Store the test point's key.
 			testPoints[i].setPredictedClassValue(bestKey);
+			//Store the number of correct neighbors
+			accuracyTable.put(Integer.toString(testPoints[i].getID()), correctClassCount);
 		}
 		
 		// Output the KNN Results.
@@ -189,11 +200,14 @@ public class KNN {
 			
 				int numbPoints = 0;
 				int correctClassifications = 0;
+				int correctNeighbors = 0, numbNeighbors = 0;
 				for(int j = 0; j < testingPoints.length; j++){
 					
 					// See if the point has the currently active class label.
 					if(testingPoints[j].getActualClassValue().equals(classLabels[i])){
 						numbPoints++;
+						numbNeighbors+=k;
+						correctNeighbors += this.accuracyTable.get(Integer.toString(testingPoints[j].getID()));
 						// See if the point is correctly classified.
 						if(testingPoints[j].getActualClassValue().equals(testingPoints[j].getPredictedClassValue()))
 							correctClassifications++;
@@ -203,7 +217,8 @@ public class KNN {
 				
 				// Print the class accuracy
 				fileOut.newLine();
-				fileOut.write("accuracy for species " + (i+1) + " = " + (double)(correctClassifications)/numbPoints); 
+				//fileOut.write("accuracy for species " + (i+1) + " = " + (double)(correctClassifications)/numbPoints); 
+				fileOut.write("accuracy for species " + (i+1) + " = " + (double)(correctNeighbors)/numbNeighbors);
 				
 			}
 				

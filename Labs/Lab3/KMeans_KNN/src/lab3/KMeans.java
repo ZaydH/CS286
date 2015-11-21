@@ -167,13 +167,13 @@ public class KMeans {
 			for(int i = 0; i < k; i++){
 				double[] centroidLoc = new double[this.numbDimensions];
 				for(int d = 0; d < this.numbDimensions; d++){
-					double partitionWidth = dimMax[d] - dimMin[d];
+					double partitionWidth = (dimMax[d] - dimMin[d])/(k);
 					
-					centroidLoc[i] = dimMin[d] + partitionWidth * (i + 0.5);
+					centroidLoc[d] = dimMin[d] + partitionWidth * (i + 0.5);
 				}
 				centroid[i] = new PointSet.Centroid( new PointSet.SimplePoint(centroidLoc, -1) );
 			}
-				
+			return;
 		}
 		// Invalid value of the centroid initialization
 		else
@@ -185,7 +185,6 @@ public class KMeans {
 		// Go through the maximum number of iterations.
 		int itrCnt = 0;
 		double maxChange;
-		double avgClusterAccuracy;
 		do{
 			
 			// Store the previous centroid locations
@@ -299,7 +298,6 @@ public class KMeans {
 		
 		// Calculate mean intercluster distance
 		double totalIntraclusterDistance = 0;
-		double numbElements = 0;
 		for(int clusterCnt = 0; clusterCnt < this.k; clusterCnt++){
 			
 			// Get the centroid's location.
@@ -349,12 +347,12 @@ public class KMeans {
 			fileOut.newLine();
 			fileOut.write("mean intracluster distance = " + calculateMeanIntraclusterDistance() ); 
 			
-			// Print the cluster accuracy.
-			double[] clusterAccuracy = calculateClusterAccuracy();
-			for(int i = 0; i < clusterAccuracy.length; i++){
-				fileOut.newLine();
-				fileOut.write("measure of species " +  (i + 1)  + " in same cluster= " + clusterAccuracy[i] );
-			}
+//			// Print the cluster accuracy.
+//			double[] clusterAccuracy = calculateClusterAccuracy();
+//			for(int i = 0; i < clusterAccuracy.length; i++){
+//				fileOut.newLine();
+//				fileOut.write("measure of species " +  (i + 1)  + " in same cluster= " + clusterAccuracy[i] );
+//			}
 			
 			/*// Sort the collection by ID number
 			PointSet.SimplePoint[] pointsArr = this.allPoints.getPoints();

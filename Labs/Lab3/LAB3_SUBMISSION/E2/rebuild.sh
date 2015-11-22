@@ -9,6 +9,6 @@ mkdir classes &> /dev/null
 echo "Building the JAR file."
 javac -d classes PointSet.java 
 jar cvmf MANIFEST.MF $JAR_NAME -C classes/ . 
-javac -classpath $CLASSPATH:$JAR_NAME -d classes KNN.java 
+javac -classpath $CLASSPATH:$JAR_NAME -d classes Knn.java 
 jar -uvf $JAR_NAME -C classes/ . 
 echo "Building complete."

@@ -1,4 +1,4 @@
-package lab3;
+package cs286;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package lab3;
+package cs286;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,10 +7,10 @@ import java.lang.reflect.Field;
 import java.util.Hashtable;
 import java.util.Random;
 
-import lab3.PointSet.Centroid;
-import lab3.PointSet.DistanceMetric;
+import cs286.PointSet.Centroid;
+import cs286.PointSet.DistanceMetric;
 
-public class KMeans {
+public class Kmeans {
 
 	private static final int INPUT_ARGUMENT_COUNT = 7;
 	
@@ -39,7 +39,7 @@ public class KMeans {
 		}
 		
 		// Build the dataset
-		KMeans kmeans = new KMeans(args[0], args[1], args[2], args[3], args[4], args[5], args[6] );
+		Kmeans kmeans = new Kmeans(args[0], args[1], args[2], args[3], args[4], args[5], args[6] );
 		
 		// Perform the clustering.
 		kmeans.performClustering();
@@ -49,7 +49,7 @@ public class KMeans {
 	}
 	
 	
-	public KMeans(String k, String maxIterations, String delta, 
+	public Kmeans(String k, String maxIterations, String delta, 
 				  String distanceMetric, String init, String inputFilePath, String outputFilePath){
 		
 		

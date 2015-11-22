@@ -1,4 +1,4 @@
-package lab3;
+package cs286;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Set;
 
-import lab3.PointSet.DistanceMetric;
+import cs286.PointSet.DistanceMetric;
 
-public class KNN {
+public class Knn {
 
 	private static final int INPUT_ARGUMENT_COUNT = 5;
 	
@@ -37,7 +37,7 @@ public class KNN {
 		}
 		
 		// Build the dataset
-		KNN knn = new KNN(args[0], args[1], args[2], args[3], args[4] );
+		Knn knn = new Knn(args[0], args[1], args[2], args[3], args[4] );
 		
 		// Perform the clustering.
 		knn.performClassification();
@@ -45,7 +45,7 @@ public class KNN {
 	}
 	
 	
-	public KNN(String holdoutPercentage, String k, String distanceMetric, String trainingSetFilePath, String outputFilePath){
+	public Knn(String holdoutPercentage, String k, String distanceMetric, String trainingSetFilePath, String outputFilePath){
 		
 		
 		/*************************************************************************/

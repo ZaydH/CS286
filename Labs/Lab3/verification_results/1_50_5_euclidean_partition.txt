@@ -1,0 +1,5 @@
+k = 1
+distance = euclidean
+centroid 0 = [5.843333333333333, 3.0573333333333337, 3.7579999999999987, 1.199333333333334]
+mean intercluster distance = NaN
+mean intracluster distance = 1.9440683605553912

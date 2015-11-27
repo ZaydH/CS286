@@ -243,7 +243,8 @@ export delta=600
 export dist=cosine
 export init=partition
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -251,7 +252,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-	diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+	diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -266,7 +267,8 @@ export delta=600
 export dist=euclidean
 export init=partition
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -274,7 +276,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -289,7 +291,8 @@ export delta=600
 export dist=cosine
 export init=zero
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -297,11 +300,10 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
-
 
 
 
@@ -312,7 +314,8 @@ export delta=600
 export dist=euclidean
 export init=zero
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -320,7 +323,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -335,7 +338,8 @@ export delta=0.1
 export dist=cosine
 export init=zero
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -343,7 +347,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -358,7 +362,8 @@ export delta=0.1
 export dist=euclidean
 export init=zero
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -366,7 +371,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -381,7 +386,8 @@ export delta=0.1
 export dist=euclidean
 export init=random
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -389,7 +395,6 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -404,7 +409,8 @@ export delta=0.1
 export dist=euclidean
 export init=partition
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -412,7 +418,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -427,7 +433,8 @@ export delta=5
 export dist=euclidean
 export init=partition
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -435,7 +442,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
@@ -450,7 +457,8 @@ export delta=5
 export dist=cosine
 export init=partition
 export inputFile=$INPUT_FILE
-export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFileName="${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+export outputFile="${OUT_DIR}/${outputFileName}"
 
 printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
@@ -458,8 +466,7 @@ if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0.\n"
 else
         printf "PASSED\n"
-        diff $COMPARE_DIR\$outputFile $OUT_DIR\$outputFile
+        diff "${COMPARE_DIR}/${outputFileName}" "${outputFile}"
 fi
 printf "\n\n"
 let COUNTER=COUNTER+1
-

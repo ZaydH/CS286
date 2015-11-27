@@ -22,6 +22,7 @@ cp KMeans_KNN/src/cs286/Kmeans.java $SUBMISSION_DIR/$EXERCISE1_DIR/
 cp KMeans_KNN/manifests/kmeans_manifest.txt $SUBMISSION_DIR/$EXERCISE1_DIR/MANIFEST.MF
 cp kmeans_test.sh $SUBMISSION_DIR/$EXERCISE1_DIR/
 cp iris-data-labeled.txt $SUBMISSION_DIR/$EXERCISE1_DIR/iris-data.txt
+cp -r verification_results $SUBMISSION_DIR/$EXERCISE1_DIR/
 
 # Build Exercise #2
 echo "Copying the files for exercise #2"
@@ -33,6 +34,7 @@ cp KMeans_KNN/src/cs286/Knn.java $SUBMISSION_DIR/$EXERCISE2_DIR/
 cp KMeans_KNN/manifests/knn_manifest.txt $SUBMISSION_DIR/$EXERCISE2_DIR/MANIFEST.MF
 cp knn_test.sh $SUBMISSION_DIR/$EXERCISE2_DIR/
 cp iris-data-labeled.txt $SUBMISSION_DIR/$EXERCISE2_DIR/iris-data.txt
+cp -r verification_results $SUBMISSION_DIR/$EXERCISE2_DIR/
 
 # Copy the files into the
 echo "Creating the lab directory."

@@ -228,16 +228,16 @@ let COUNTER=COUNTER+1
 
 
 
-# Test - Invalid centroid initialization test
+# Test - High Delta, One Iteration, Cosine Distance, Partition Test
 export k=4
-export maxIterations=50
+export maxIterations=1
 export delta=600
 export dist=cosine
-export init=random
+export init=partition
 export inputFile=$INPUT_FILE
 export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
 
-printf "Test #${COUNTER} - maxitr =\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
 bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
 if [ $? -ne 0 ]; then
         printf "ERROR: Did not return value 0."
@@ -246,3 +246,159 @@ else
 fi
 printf "\n\n\n"
 let COUNTER=COUNTER+1
+
+
+
+
+# Test - High Delta, One Iteration, Euclidean Distance, Partition Test
+export k=4
+export maxIterations=1
+export delta=600
+export dist=euclidean
+export init=partition
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - High Delta, One Iteration, Cosine Distance, Zero Test
+export k=4
+export maxIterations=1
+export delta=600
+export dist=cosine
+export init=zero
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - High Delta, One Iteration, Euclidean Distance, Zero Test
+export k=4
+export maxIterations=1
+export delta=600
+export dist=euclidean
+export init=zero
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - Low Delta Cosine Distance Test
+export k=5
+export maxIterations=50
+export delta=0.1
+export dist=cosine
+export init=zero
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - Low Delta, Euclidean Distance Test
+export k=5
+export maxIterations=50
+export delta=0.1
+export dist=euclidean
+export init=zero
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - Low Delta, Euclidean Distance Test
+export k=5
+export maxIterations=50
+export delta=0.1
+export dist=euclidean
+export init=random
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+
+
+
+# Test - One cluster Test
+export k=1
+export maxIterations=50
+export delta=5
+export dist=euclidean
+export init=partition
+export inputFile=$INPUT_FILE
+export outputFile="$OUT_DIR/${k}_${maxIterations}_${delta}_${dist}_${init}.txt"
+
+printf "Test #${COUNTER} - k=\"${k}\", maxitr=\"${maxIterations}\", delta=\"${delta}\", dist=\"${dist}\", init=\"${init}\" test.\n"
+bash rerun.sh $k $maxIterations $delta $dist $init $inputFile $outputFile
+if [ $? -ne 0 ]; then
+        printf "ERROR: Did not return value 0."
+else
+        printf "PASSED"
+fi
+printf "\n\n\n"
+let COUNTER=COUNTER+1
+
+

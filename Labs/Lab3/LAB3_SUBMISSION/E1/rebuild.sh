@@ -3,7 +3,7 @@
 export JAR_NAME="kmeans.jar"
 
 echo "Create the classes directory for the java class files."
-rm -irf classes &> /dev/null
+rm -rf classes &> /dev/null
 mkdir classes &> /dev/null
 
 echo "Building the JAR file."

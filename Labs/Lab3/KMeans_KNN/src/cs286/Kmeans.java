@@ -332,7 +332,7 @@ public class Kmeans {
 				PointSet.SimplePoint centroidPoint = centroid[i].getCoordinates();
 				
 				fileOut.newLine();
-				fileOut.write("centroid " + i + " = [");
+				fileOut.write("centroid " + (i+1) + " = [");
 				// Print the centroid point for each dimension
 				for(int j = 0; j < centroidPoint.getData().length; j++){
 					// Add a comma separator between the points

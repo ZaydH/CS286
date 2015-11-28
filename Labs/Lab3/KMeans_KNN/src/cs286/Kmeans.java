@@ -89,8 +89,9 @@ public class Kmeans {
 		}
 		// Verify that the initialize of the centroids is valid.
 		this.centroidInit = init;
-		if(!this.centroidInit.equals("random") && !this.centroidInit.equals("zero")
-		   && !this.centroidInit.equals("partition") ){
+		//if(!this.centroidInit.equals("random") && !this.centroidInit.equals("zero")
+		//   && !this.centroidInit.equals("partition") ){
+		if(!this.centroidInit.equals("random") && !this.centroidInit.equals("partition") ){		
 			System.err.println("Invalid centroid initialization value."); 
 			System.exit(1);
 		}

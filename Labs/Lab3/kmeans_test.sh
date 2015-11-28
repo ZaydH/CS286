@@ -175,7 +175,7 @@ export k=4
 export maxIterations=50
 export delta=3
 export dist=cosine
-export init=dummy
+export init=zero
 export inputFile=$INPUT_FILE
 export outputFile=dummy.txt
 

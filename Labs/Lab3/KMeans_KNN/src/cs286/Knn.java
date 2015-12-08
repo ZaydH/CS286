@@ -55,7 +55,7 @@ public class Knn {
 		// Verify that the holdout percentage is valid
 		try{ this.holdoutPercentage = Double.parseDouble(holdoutPercentage); }
 		catch(Exception e){ System.err.println("Invalid value of holdout percentage."); System.exit(1);}
-		if( this.holdoutPercentage < 0.05 || this.holdoutPercentage > 0.2 ){
+		if( this.holdoutPercentage < 5 || this.holdoutPercentage > 20 ){
 			System.err.println("Invalid value of holdout percentage."); 
 			System.exit(1);
 		}

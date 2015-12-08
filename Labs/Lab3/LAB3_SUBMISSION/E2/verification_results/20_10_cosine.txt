@@ -1,0 +1,5 @@
+k = 10
+distance = cosine
+average accuracy for species 1 = 1.0
+average accuracy for species 2 = 0.96
+average accuracy for species 3 = 0.97

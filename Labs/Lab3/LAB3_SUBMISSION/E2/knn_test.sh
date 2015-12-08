@@ -25,7 +25,7 @@ COUNTER=1
 
 # Test - Do an extra input parameter check
 printf "Test #${COUNTER} - Too many input parameters check.\n"
-export holdOut=0.1
+export holdOut=10
 export k=3
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -42,7 +42,7 @@ let COUNTER=COUNTER+1
 
 # Test - Perform an insufficient parameter count check
 printf "Test #${COUNTER} - Insufficient input parameter check.\n"
-export holdOut=0.1
+export holdOut=10
 export k=3
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -60,7 +60,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - holdOut Value check
-export holdOut=0.049
+export holdOut=4.9
 export k=3
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -79,7 +79,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - holdOut Value check
-export holdOut=0.21
+export holdOut=20.1
 export k=3
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -98,7 +98,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - k Value check
-export holdOut=0.1
+export holdOut=10
 export k=0
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -118,7 +118,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - k Value check
-export holdOut=0.1
+export holdOut=10
 export k=1.5
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -138,7 +138,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - k Value check
-export holdOut=0.2
+export holdOut=20
 export k=121
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -158,7 +158,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Input File Check
-export holdOut=0.1
+export holdOut=10.1
 export k=2
 export dist=cosine
 export inputFile=dummy
@@ -178,7 +178,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Output File Check
-export holdOut=0.1
+export holdOut=10.1
 export k=2
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -198,7 +198,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Distance Metric Check
-export holdOut=0.1
+export holdOut=10.1
 export k=2
 export dist=dummy
 export inputFile=$INPUT_FILE
@@ -217,7 +217,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Single Neighbor, Cosine
-export holdOut=0.1
+export holdOut=10.1
 export k=1
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -239,7 +239,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Single Neighbor, Euclidean
-export holdOut=0.1
+export holdOut=10.1
 export k=1
 export dist=euclidean
 export inputFile=$INPUT_FILE
@@ -261,7 +261,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Five Neighbors, Euclidean
-export holdOut=0.05
+export holdOut=5.01
 export k=5
 export dist=euclidean
 export inputFile=$INPUT_FILE
@@ -283,7 +283,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - Five Neighbors, Cosine
-export holdOut=0.05
+export holdOut=5.01
 export k=5
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -305,7 +305,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - 10 Neighbors, Cosine
-export holdOut=0.2
+export holdOut=20
 export k=10
 export dist=cosine
 export inputFile=$INPUT_FILE
@@ -327,7 +327,7 @@ let COUNTER=COUNTER+1
 
 
 # Test - 10 Neighbors, Euclidean
-export holdOut=0.2
+export holdOut=20
 export k=10
 export dist=euclidean
 export inputFile=$INPUT_FILE

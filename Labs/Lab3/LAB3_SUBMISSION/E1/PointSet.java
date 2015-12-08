@@ -164,7 +164,7 @@ public class PointSet {
 		// Delete Points from the back
 		for(int i = 3; i > 0; i--){
 			// Select the holdout points from the back.
-			for(int j = 1; j <= holdoutPercentage * POINTS_PER_CLASS; j++ ){
+			for(int j = 1; j <= holdoutPercentage/100 * POINTS_PER_CLASS; j++ ){
 				PointSet.SimplePoint tempPoint = originalPoints.remove(POINTS_PER_CLASS * i - j);
 				holdoutPoints.add(tempPoint);
 			}

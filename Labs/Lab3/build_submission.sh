@@ -41,6 +41,7 @@ echo "Creating the lab directory."
 rm -rf $LAB_DIRECTORY/$SUBMISSION_DIR &> /dev/null
 
 # Build the submission zip file
+rm $SUBMISSION_DIR.zip
 zip -r $SUBMISSION_DIR.zip $SUBMISSION_DIR &> /dev/null
 cp $SUBMISSION_DIR.zip $LAB_DIRECTORY
 #unzip $LAB_DIRECTORY/$SUBMISSION_DIR.zip

@@ -39,10 +39,11 @@ cp -r verification_results $SUBMISSION_DIR/$EXERCISE2_DIR/
 # Copy the files into the
 echo "Creating the lab directory."
 rm -rf $LAB_DIRECTORY/$SUBMISSION_DIR &> /dev/null
-cp -r $SUBMISSION_DIR $LAB_DIRECTORY
 
 # Build the submission zip file
 zip -r $SUBMISSION_DIR.zip $SUBMISSION_DIR &> /dev/null
+cp $SUBMISSION_DIR.zip $LAB_DIRECTORY
+#unzip $LAB_DIRECTORY/$SUBMISSION_DIR.zip
 
 # End of the Bash creation script
 echo "Submission building completed successfully."

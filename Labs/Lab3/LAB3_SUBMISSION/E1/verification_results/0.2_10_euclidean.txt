@@ -1,5 +1,0 @@
-k = 10
-distance = euclidean
-average accuracy for species 1 = 1.0
-average accuracy for species 2 = 0.99
-average accuracy for species 3 = 0.92
